@@ -16,6 +16,8 @@ function App() {
   const [cameraRotation, setCameraRotation] = useState<[number, number, number]>(INITIAL_CAMERA_ROTATION)
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
+  // 前進しているかどうか
+  const [isMoving, setIsMoving] = useState<boolean>(false)
 
   useEffect(() => {
     // カメラの位置を更新する関数
@@ -70,6 +72,13 @@ function App() {
     requestPermission();
 
     timerRef.current = setInterval(() => {
+      if (isMoving) {
+        const newSpeed = cameraSpeed + 0.0002;
+        setCameraSpeed(Math.min(newSpeed, 0.02));
+      } else {
+        const newSpeed = cameraSpeed - 0.001;
+        setCameraSpeed(Math.max(newSpeed, 0));
+      }
       updateCameraPosition();
     }, 1000 / 60);
 
@@ -99,8 +108,8 @@ function App() {
           gap: 10,
         }}
       >
-        <ControlButton onClick={() => setCameraSpeed(0.03)} label="START" bgColor="#2194FF" />
-        <ControlButton onClick={() => setCameraSpeed(0)} label="STOP" bgColor="#FF2121" />
+        <ControlButton onClick={() => setIsMoving(true)} label="START" bgColor="#2194FF" />
+        <ControlButton onClick={() => setIsMoving(false)} label="STOP" bgColor="#FF2121" />
       </div>
       {/* デバッグ用テキスト */}
       <DebugText>
