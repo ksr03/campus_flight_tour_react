@@ -105,8 +105,8 @@ function App() {
       {/* デバッグ用テキスト */}
       <DebugText>
         <>
-          cameraPosition: {cameraPosition.toString()}<br />
-          cameraRotation: {cameraRotation.toString()}<br />
+          {`cameraPosition: ${cameraPosition[0].toFixed(2).toString()}, ${cameraPosition[1].toFixed(2).toString()}, ${cameraPosition[2].toFixed(2).toString()}`}<br />
+          {`cameraRotation: ${cameraRotation[0].toFixed(2).toString()}, ${cameraRotation[1].toFixed(2).toString()}, ${cameraRotation[2].toFixed(2).toString()}`}<br />
           cameraSpeed: {cameraSpeed}
         </>
       </DebugText>
