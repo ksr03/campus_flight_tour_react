@@ -20,7 +20,7 @@ function Viewport (props: Props): JSX.Element {
             makeDefault
             position={props.cameraPosition}
             rotation={props.cameraRotation}
-            fov={80}
+            fov={100}
             near={0.1}
             far={100}
           />

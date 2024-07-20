@@ -2,10 +2,11 @@ import { useState, useEffect, useRef } from "react"
 import * as THREE from 'three'
 import Viewport from "./components/3D/Viewport"
 import ControlButton from "./components/ControlButton"
+import DebugText from "./components/DebugText"
 
 // カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.5, 3]
-const INITIAL_CAMERA_ROTATION: [number, number, number] = [0, 0, 0]
+const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.2, 3]
+const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
 
 function App() {
   const timerRef = useRef<number | null>(null);
@@ -15,6 +16,8 @@ function App() {
   const [cameraRotation, setCameraRotation] = useState<[number, number, number]>(INITIAL_CAMERA_ROTATION)
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
+  // 前進しているかどうか
+  const [isMoving, setIsMoving] = useState<boolean>(false)
 
   useEffect(() => {
     // カメラの位置を更新する関数
@@ -40,18 +43,42 @@ function App() {
     };
   
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-      const { beta, alpha, gamma } = event;
+      const { beta, gamma } = event;
 
-      const betaRad = THREE.MathUtils.degToRad(beta ?? 0);
-      const gammaRad = THREE.MathUtils.degToRad(gamma ?? 0);
-      const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
+      const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
+      const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
+      const alphaRad = cameraRotation[1] + gammaRad / 40;
 
-      setCameraRotation([betaRad, gammaRad, alphaRad]);
+      setCameraRotation([betaRad, alphaRad, gammaRad]);
     };
 
-    window.addEventListener("deviceorientation", handleDeviceOrientation);
+    const requestPermission = async () => {
+      // @ts-expect-error: Check for iOS 13+ permission request
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        try {
+          // @ts-expect-error: Check for iOS 13+ permission request
+          const response = await DeviceOrientationEvent.requestPermission();
+          if (response === 'granted') {
+            window.addEventListener('deviceorientation', handleDeviceOrientation);
+          }
+        } catch (error) {
+          console.error('Device orientation permission request failed:', error);
+        }
+      } else {
+        window.addEventListener('deviceorientation', handleDeviceOrientation);
+      }
+    };
+  
+    requestPermission();
 
     timerRef.current = setInterval(() => {
+      if (isMoving) {
+        const newSpeed = cameraSpeed + 0.0002;
+        setCameraSpeed(Math.min(newSpeed, 0.02));
+      } else {
+        const newSpeed = cameraSpeed - 0.001;
+        setCameraSpeed(Math.max(newSpeed, 0));
+      }
       updateCameraPosition();
     }, 1000 / 60);
 
@@ -62,7 +89,7 @@ function App() {
         clearInterval(timerRef.current);
       }
     };
-  }, [cameraPosition, cameraRotation, cameraSpeed]);
+  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving]);
 
   return (
     <>
@@ -81,9 +108,17 @@ function App() {
           gap: 10,
         }}
       >
-        <ControlButton onClick={() => setCameraSpeed(0.03)} label="START" bgColor="#2194FF" />
-        <ControlButton onClick={() => setCameraSpeed(0)} label="STOP" bgColor="#FF2121" />
+        <ControlButton onClick={() => setIsMoving(true)} label="START" bgColor="#2194FF" />
+        <ControlButton onClick={() => setIsMoving(false)} label="STOP" bgColor="#FF2121" />
       </div>
+      {/* デバッグ用テキスト */}
+      <DebugText>
+        <>
+          {`cameraPosition: ${cameraPosition[0].toFixed(2).toString()}, ${cameraPosition[1].toFixed(2).toString()}, ${cameraPosition[2].toFixed(2).toString()}`}<br />
+          {`cameraRotation: ${cameraRotation[0].toFixed(2).toString()}, ${cameraRotation[1].toFixed(2).toString()}, ${cameraRotation[2].toFixed(2).toString()}`}<br />
+          cameraSpeed: {cameraSpeed}
+        </>
+      </DebugText>
     </>
   )
 }
