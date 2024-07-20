@@ -7,7 +7,7 @@ function CampusModel (): JSX.Element {
   const dracoLoader = new DRACOLoader()
   dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.7/') // DRACOのデコーダーのパスを設定
 
-  const { scene } = useLoader(GLTFLoader, '/models/campus.glb', loader => {
+  const { scene } = useLoader(GLTFLoader, '/models/campus_x90.glb', loader => {
     loader.setDRACOLoader(dracoLoader)
   })
   const copiedScene = useMemo(() => scene.clone(), [scene])
