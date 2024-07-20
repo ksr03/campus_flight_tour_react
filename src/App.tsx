@@ -50,7 +50,24 @@ function App() {
       setCameraRotation([betaRad, gammaRad, alphaRad]);
     };
 
-    window.addEventListener("deviceorientation", handleDeviceOrientation);
+    const requestPermission = async () => {
+      // @ts-expect-error: Check for iOS 13+ permission request
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        try {
+          // @ts-expect-error: Check for iOS 13+ permission request
+          const response = await DeviceOrientationEvent.requestPermission();
+          if (response === 'granted') {
+            window.addEventListener('deviceorientation', handleDeviceOrientation);
+          }
+        } catch (error) {
+          console.error('Device orientation permission request failed:', error);
+        }
+      } else {
+        window.addEventListener('deviceorientation', handleDeviceOrientation);
+      }
+    };
+  
+    requestPermission();
 
     timerRef.current = setInterval(() => {
       updateCameraPosition();
