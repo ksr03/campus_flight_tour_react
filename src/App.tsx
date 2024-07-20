@@ -41,13 +41,12 @@ function App() {
     };
   
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-      const { beta, alpha, gamma } = event;
+      const { beta, alpha } = event;
 
       const betaRad = THREE.MathUtils.degToRad(beta ?? 0);
-      const gammaRad = THREE.MathUtils.degToRad(gamma ?? 10);
       const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
 
-      setCameraRotation([betaRad, gammaRad, alphaRad]);
+      setCameraRotation([betaRad, 0, alphaRad]);
     };
 
     const requestPermission = async () => {
