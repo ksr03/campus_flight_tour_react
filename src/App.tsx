@@ -43,7 +43,7 @@ function App() {
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       const { beta, gamma } = event;
 
-      const betaRad = Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0);
+      const betaRad = - Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0);
       const gammaRad = - THREE.MathUtils.degToRad(gamma ?? 0);
       // const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
 
