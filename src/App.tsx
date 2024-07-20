@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import * as THREE from 'three'
 import Viewport from "./components/3D/Viewport"
 import ControlButton from "./components/ControlButton"
+import DebugText from "./components/DebugText"
 
 // カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.5, 3]
@@ -84,6 +85,14 @@ function App() {
         <ControlButton onClick={() => setCameraSpeed(0.03)} label="START" bgColor="#2194FF" />
         <ControlButton onClick={() => setCameraSpeed(0)} label="STOP" bgColor="#FF2121" />
       </div>
+      {/* デバッグ用テキスト */}
+      <DebugText>
+        <>
+          cameraPosition: {cameraPosition.toString()}<br />
+          cameraRotation: {cameraRotation.toString()}<br />
+          cameraSpeed: {cameraSpeed}
+        </>
+      </DebugText>
     </>
   )
 }

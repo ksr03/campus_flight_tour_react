@@ -18,6 +18,7 @@ function ControlButton({ onClick, label, bgColor }: Props) {
         fontFamily: 'Ubuntu',
         fontSize: '20px',
         color: 'white',
+        zIndex: 1000,
       }}
     >
       {label}
