@@ -43,9 +43,9 @@ function App() {
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       const { beta, alpha, gamma } = event;
 
-      const betaRad = THREE.MathUtils.degToRad(beta ?? 1);
-      const gammaRad = THREE.MathUtils.degToRad(gamma ?? 1);
-      const alphaRad = THREE.MathUtils.degToRad(alpha ?? 1);
+      const betaRad = THREE.MathUtils.degToRad(beta ?? 0);
+      const gammaRad = THREE.MathUtils.degToRad(gamma ?? 10);
+      const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
 
       setCameraRotation([betaRad, gammaRad, alphaRad]);
     };
