@@ -47,7 +47,7 @@ function App() {
       const gammaRad = - THREE.MathUtils.degToRad(gamma ?? 0);
       // const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
 
-      setCameraRotation([gammaRad, 0, betaRad]);
+      setCameraRotation([betaRad, 0, gammaRad]);
     };
 
     const requestPermission = async () => {
