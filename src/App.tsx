@@ -45,7 +45,7 @@ function App() {
 
       const betaRad = -Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0);
       const gammaRad = - THREE.MathUtils.degToRad(gamma ?? 0);
-      const alphaRad = cameraRotation[1] + gammaRad / 5;
+      const alphaRad = cameraRotation[1] + gammaRad / 30;
 
       setCameraRotation([betaRad, alphaRad, gammaRad]);
     };
