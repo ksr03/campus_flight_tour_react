@@ -6,7 +6,7 @@ import DebugText from "./components/DebugText"
 
 // カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.5, 3]
-const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 2, 0, 0]
+const INITIAL_CAMERA_ROTATION: [number, number, number] = [0, 0, 0]
 
 function App() {
   const timerRef = useRef<number | null>(null);
@@ -16,17 +16,6 @@ function App() {
   const [cameraRotation, setCameraRotation] = useState<[number, number, number]>(INITIAL_CAMERA_ROTATION)
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
-
-  const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-    const { beta, gamma } = event;
-
-    const betaRad = - THREE.MathUtils.degToRad(beta ?? 0);
-    const tempGammaRad = - Math.PI / 2 - THREE.MathUtils.degToRad(gamma ?? 0);
-    const gammaRad = tempGammaRad < -Math.PI / 2 ? tempGammaRad + Math.PI : tempGammaRad;
-    // const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
-
-    setCameraRotation([gammaRad, 0, betaRad]);
-  };
 
   useEffect(() => {
     // カメラの位置を更新する関数
@@ -51,6 +40,35 @@ function App() {
       setCameraPosition(newPosition);
     };
   
+    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+      const { beta, gamma } = event;
+
+      const betaRad = - THREE.MathUtils.degToRad(beta ?? 0);
+      const gammaRad = - THREE.MathUtils.degToRad(gamma ?? 0);
+      // const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
+
+      setCameraRotation([gammaRad, 0, betaRad]);
+    };
+
+    const requestPermission = async () => {
+      // @ts-expect-error: Check for iOS 13+ permission request
+      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+        try {
+          // @ts-expect-error: Check for iOS 13+ permission request
+          const response = await DeviceOrientationEvent.requestPermission();
+          if (response === 'granted') {
+            window.addEventListener('deviceorientation', handleDeviceOrientation);
+          }
+        } catch (error) {
+          console.error('Device orientation permission request failed:', error);
+        }
+      } else {
+        window.addEventListener('deviceorientation', handleDeviceOrientation);
+      }
+    };
+  
+    requestPermission();
+
     timerRef.current = setInterval(() => {
       updateCameraPosition();
     }, 1000 / 60);
@@ -64,25 +82,6 @@ function App() {
     };
   }, [cameraPosition, cameraRotation, cameraSpeed]);
 
-  const requestPermission = async () => {
-    // @ts-expect-error: Check for iOS 13+ permission request
-    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-      try {
-        // @ts-expect-error: Check for iOS 13+ permission request
-        const response = await DeviceOrientationEvent.requestPermission();
-        if (response === 'granted') {
-          window.addEventListener('deviceorientation', handleDeviceOrientation);
-        }
-      } catch (error) {
-        console.error('Device orientation permission request failed:', error);
-      }
-    } else {
-      window.addEventListener('deviceorientation', handleDeviceOrientation);
-    }
-  };
-
-  requestPermission();
-  
   return (
     <>
       {/* 3Dビューポート */}
