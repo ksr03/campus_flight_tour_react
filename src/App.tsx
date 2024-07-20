@@ -6,7 +6,7 @@ import DebugText from "./components/DebugText"
 
 // カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.5, 3]
-const INITIAL_CAMERA_ROTATION: [number, number, number] = [Math.PI / 2, 0, 0]
+const INITIAL_CAMERA_ROTATION: [number, number, number] = [Math.PI / 2, 0, Math.PI / 2]
 
 function App() {
   const timerRef = useRef<number | null>(null);
@@ -43,8 +43,8 @@ function App() {
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       const { beta, alpha } = event;
 
-      const betaRad = Math.PI + THREE.MathUtils.degToRad(beta ?? 0);
-      const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
+      const betaRad = Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0);
+      const alphaRad = Math.PI / 2 + THREE.MathUtils.degToRad(alpha ?? 10);
 
       setCameraRotation([betaRad, 0, alphaRad]);
     };
