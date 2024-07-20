@@ -64,27 +64,25 @@ function App() {
     };
   }, [cameraPosition, cameraRotation, cameraSpeed]);
 
-  useEffect(() => {
-    const requestPermission = async () => {
-      // @ts-expect-error: Check for iOS 13+ permission request
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        try {
-          // @ts-expect-error: Check for iOS 13+ permission request
-          const response = await DeviceOrientationEvent.requestPermission();
-          if (response === 'granted') {
-            window.addEventListener('deviceorientation', handleDeviceOrientation);
-          }
-        } catch (error) {
-          console.error('Device orientation permission request failed:', error);
+  const requestPermission = async () => {
+    // @ts-expect-error: Check for iOS 13+ permission request
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      try {
+        // @ts-expect-error: Check for iOS 13+ permission request
+        const response = await DeviceOrientationEvent.requestPermission();
+        if (response === 'granted') {
+          window.addEventListener('deviceorientation', handleDeviceOrientation);
         }
-      } else {
-        window.addEventListener('deviceorientation', handleDeviceOrientation);
+      } catch (error) {
+        console.error('Device orientation permission request failed:', error);
       }
-    };
-  
-    requestPermission();
-  }, []);
+    } else {
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    }
+  };
 
+  requestPermission();
+  
   return (
     <>
       {/* 3Dビューポート */}
