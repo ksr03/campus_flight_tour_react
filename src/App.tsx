@@ -6,7 +6,7 @@ import DebugText from "./components/DebugText"
 
 // カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.5, 3]
-const INITIAL_CAMERA_ROTATION: [number, number, number] = [Math.PI / 2, 0, 0]
+const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 2, 0, 0]
 
 function App() {
   const timerRef = useRef<number | null>(null);
