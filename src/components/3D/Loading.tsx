@@ -4,7 +4,7 @@ function Loading (): JSX.Element {
   const { progress } = useProgress()
   return (
     <Html center>
-    <div>{`${Math.floor(progress)}%`}</div>
+      <div style={{ fontSize: '25px'}}>{`${Math.floor(progress)}%`}</div>
     </Html>
   )
 }

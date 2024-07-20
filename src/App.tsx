@@ -89,7 +89,7 @@ function App() {
         clearInterval(timerRef.current);
       }
     };
-  }, [cameraPosition, cameraRotation, cameraSpeed]);
+  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving]);
 
   return (
     <>
