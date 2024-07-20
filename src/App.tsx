@@ -17,6 +17,17 @@ function App() {
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
 
+  const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+    const { beta, gamma } = event;
+
+    const betaRad = - THREE.MathUtils.degToRad(beta ?? 0);
+    const tempGammaRad = - Math.PI / 2 - THREE.MathUtils.degToRad(gamma ?? 0);
+    const gammaRad = tempGammaRad < -Math.PI / 2 ? tempGammaRad + Math.PI : tempGammaRad;
+    // const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
+
+    setCameraRotation([gammaRad, 0, betaRad]);
+  };
+
   useEffect(() => {
     // カメラの位置を更新する関数
     const updateCameraPosition = () => {
@@ -40,16 +51,20 @@ function App() {
       setCameraPosition(newPosition);
     };
   
-    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-      const { beta, gamma } = event;
+    timerRef.current = setInterval(() => {
+      updateCameraPosition();
+    }, 1000 / 60);
 
-      const betaRad = - THREE.MathUtils.degToRad(beta ?? 0);
-      const gammaRad = - Math.PI / 2 - THREE.MathUtils.degToRad(gamma ?? 0);
-      // const alphaRad = THREE.MathUtils.degToRad(alpha ?? 10);
-
-      setCameraRotation([gammaRad, 0, betaRad]);
+    // クリーンアップ
+    return () => {
+      window.removeEventListener("deviceorientation", handleDeviceOrientation);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
     };
+  }, [cameraPosition, cameraRotation, cameraSpeed]);
 
+  useEffect(() => {
     const requestPermission = async () => {
       // @ts-expect-error: Check for iOS 13+ permission request
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -68,19 +83,7 @@ function App() {
     };
   
     requestPermission();
-
-    timerRef.current = setInterval(() => {
-      updateCameraPosition();
-    }, 1000 / 60);
-
-    // クリーンアップ
-    return () => {
-      window.removeEventListener("deviceorientation", handleDeviceOrientation);
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
-      }
-    };
-  }, [cameraPosition, cameraRotation, cameraSpeed]);
+  }, []);
 
   return (
     <>
