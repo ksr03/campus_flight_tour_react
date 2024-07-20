@@ -43,7 +43,7 @@ function App() {
     const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
       const { beta, gamma } = event;
 
-      const betaRad = Math.max(-Math.PI / 4, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4));
+      const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
       const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
       const alphaRad = cameraRotation[1] + gammaRad / 40;
 
