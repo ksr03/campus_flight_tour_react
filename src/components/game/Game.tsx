@@ -5,10 +5,14 @@ import DebugText from "./DebugText"
 import GameUI from "./GameUI"
 
 // カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.2, 3]
+const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 3, 4]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
 
-function Game() {
+interface Props {
+  isLoading: boolean
+}
+
+function Game(props: Props): JSX.Element {
   const timerRef = useRef<number | null>(null);
   // カメラの位置
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
@@ -90,7 +94,7 @@ function Game() {
         clearInterval(timerRef.current);
       }
     };
-  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving]);
+  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving, props.isLoading]);
 
   return (
     <>
