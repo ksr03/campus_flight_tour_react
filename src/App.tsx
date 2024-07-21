@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import Game from "./components/Game"
 import Loading from "./components/Loading";
 
-const LOADING_TIME = 3000;
+const LOADING_TIME = 2000;
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);

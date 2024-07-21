@@ -1,3 +1,5 @@
+import { IoPhonePortraitOutline } from "react-icons/io5";
+
 type Props = {
     isLoading: boolean
 }
@@ -12,7 +14,6 @@ const Loading = ({isLoading}:Props) => {
         width: '100%',
         height: '100%',
         backgroundColor: 'white',
-        fontSize: '1.2rem',
         opacity: isLoading ? 1 : 0,
         display: 'flex',
         alignItems: 'center',
@@ -21,7 +22,10 @@ const Loading = ({isLoading}:Props) => {
         transition: '.5s'
       }}
     >
-        縦画面でプレイしてください
+      <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <IoPhonePortraitOutline size={100} color="black" />
+        <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>縦画面でプレイしてください</p>
+      </div>
     </div>
   )
 }
