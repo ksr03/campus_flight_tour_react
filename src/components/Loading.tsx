@@ -18,8 +18,7 @@ const Loading = ({isLoading}:Props) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: isLoading ? '9999' : '0',
-        transition: '.5s'
+        zIndex: isLoading ? 9999 : 0,
       }}
     >
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
