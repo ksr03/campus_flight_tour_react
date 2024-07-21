@@ -3,13 +3,15 @@ import * as THREE from 'three'
 import Viewport from "../3D/Viewport"
 import DebugText from "./DebugText"
 import GameUI from "./GameUI"
+import StartScreen from "./StartScreen"
 
 // カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.2, 3]
+const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 4]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
 
 function Game() {
   const timerRef = useRef<number | null>(null);
+  const [isStarted, setIsStarted] = useState<boolean>(false);
   // カメラの位置
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
   // カメラの回転
@@ -90,12 +92,14 @@ function Game() {
         clearInterval(timerRef.current);
       }
     };
-  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving]);
+  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving, isStarted]);
 
   return (
     <>
+      {/* ゲームスタートボタン */}
+      <StartScreen onClick={() => setIsStarted(true)} isStarted={isStarted} />
       {/* 3Dビューポート */}
-      <div style={{ width: '100%', height: '100%', backgroundColor: 'skyblue' }}>
+      <div style={{ width: '100%', height: '100%', backgroundColor: 'skyblue', zIndex: '100' }}>
         <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} />
       </div>
       {/* 2D UI */}

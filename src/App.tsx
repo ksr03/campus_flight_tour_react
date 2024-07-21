@@ -5,7 +5,7 @@ import Loading from "./components/Loading";
 import PCScreen from "./components/PCScreen";
 import Header from "./components/Header";
 
-const LOADING_TIME = 2000;
+const LOADING_TIME = 3000;
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);

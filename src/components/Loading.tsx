@@ -1,4 +1,4 @@
-import { IoPhonePortraitOutline } from "react-icons/io5";
+import { RotateLoader } from "react-spinners";
 
 type Props = {
     isLoading: boolean
@@ -18,13 +18,13 @@ const Loading = ({isLoading}:Props) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: isLoading ? '9999' : '0',
-        transition: '.5s'
+        zIndex: isLoading ? 9999 : 0,
       }}
     >
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-        <IoPhonePortraitOutline size={100} color="black" />
-        <p className="m-plus-rounded-1c-regular" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>縦画面でプレイしてください</p>
+        <p className="m-plus-rounded-1c-regular" style={{ fontSize: '1.2rem', fontWeight: 'bold', paddingBottom: '40px' }}>縦画面でプレイしてください</p>
+        <RotateLoader color='skyblue' size={15} />
+        <p className="m-plus-rounded-1c-regular" style={{ fontSize: '1rem', fontWeight: 'bold', color: 'skyblue', paddingTop: '20px' }}>読み込み中....</p>
       </div>
     </div>
   )
