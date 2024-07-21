@@ -1,3 +1,5 @@
+import { TbHandClick } from "react-icons/tb";
+
 interface Props {
   isStarted: boolean;
   onClick: () => void;
@@ -10,23 +12,21 @@ function StartScreen(props: Props): JSX.Element {
         className="m-plus-rounded-1c-regular"
         style={{
           position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '105%',
-          height: '105%',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
           opacity: props.isStarted ? 0 : 1,
           backgroundColor: 'white',
           border: 'none',
-          fontWeight: 'bold',
-          fontSize: '1.2rem',
-          color: 'black',
           transition: '.5s',
           zIndex: props.isStarted ? 0 : 9000,
         }}
       >
-        読み込み完了！<br/>
-        タップして始める
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <p className="m-plus-rounded-1c-regular" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>タップして始める</p>
+          <TbHandClick style={{ fontSize: '40px', marginLeft: '10px' }} />
+        </div>
       </button>
   )
 }
