@@ -29,7 +29,7 @@ function App() {
     <>
       <Loading isLoading={isLoading} />
       <Header />
-      {isMobile ? <PCScreen /> : <Game />}
+      {isMobile ? <Game /> : <PCScreen />}
       {/* <Game /> */}
     </>
   )
