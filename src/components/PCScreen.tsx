@@ -28,7 +28,7 @@ const PCScreen = () => {
         <p style={{ display: 'inline-block', marginBottom: '1rem', fontSize: '1.2rem', color: 'red' }}>PCには対応していません。</p>
         以下のQRコードから<br/>
         スマートフォンでアクセスしてください。
-        <img src='/qrcode.png' alt='QRコード' style={{ width: '300px', height: '300px'}} />
+        <img src='/images/qrcode.png' alt='QRコード' style={{ width: '300px', height: '300px'}} />
       </div>
     </div>
   )

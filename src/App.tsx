@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { isMobile } from "react-device-detect";
-import Game from "./components/Game"
+import Game from "./components/game/Game"
 import Loading from "./components/Loading";
 import PCScreen from "./components/PCScreen";
 import Header from "./components/Header";

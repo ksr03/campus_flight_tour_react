@@ -11,7 +11,7 @@ function ControlButton({ onClick, label, bgColor }: Props) {
       className="m-plus-rounded-1c-regular"
       style={{
         width: '100px',
-        height: '60px',
+        height: '50px',
         backgroundColor: bgColor,
         border: 'none',
         borderRadius: '50px',

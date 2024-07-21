@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react"
 import * as THREE from 'three'
-import Viewport from "./3D/Viewport"
-import ControlButton from "./ControlButton"
+import Viewport from "../3D/Viewport"
 import DebugText from "./DebugText"
+import GameUI from "./GameUI"
 
 // カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.2, 3]
@@ -18,6 +18,7 @@ function Game() {
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
   // 前進しているかどうか
   const [isMoving, setIsMoving] = useState<boolean>(false)
+  const handleIsMoving = (isMoving: boolean) => setIsMoving(isMoving)
 
   useEffect(() => {
     // カメラの位置を更新する関数
@@ -98,19 +99,7 @@ function Game() {
         <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} />
       </div>
       {/* 2D UI */}
-      <div
-        style={{
-          position: 'fixed',
-          right: 0, bottom: 0,
-          padding: 10,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 10,
-        }}
-      >
-        <ControlButton onClick={() => setIsMoving(true)} label="進む" bgColor="#00C14D" />
-        <ControlButton onClick={() => setIsMoving(false)} label="止まる" bgColor="#FF2121" />
-      </div>
+      <GameUI handleIsMoving={handleIsMoving} />
       {/* デバッグ用テキスト */}
       <DebugText>
         <>
