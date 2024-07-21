@@ -1,4 +1,5 @@
 import ControlButton from "./ControlButton";
+import SpeechBubble from "./SpeechBubble";
 
 interface Props {
   handleIsMoving: (isMoving: boolean) => void;
@@ -13,16 +14,22 @@ function GameUI (props: Props): JSX.Element {
       />
         <div
           style={{
+            width: '100%',
+            height: '110px',
             position: 'fixed',
-            right: 0, bottom: 0,
+            bottom: 0,
             padding: 10,
             display: 'flex',
-            flexDirection: 'column',
-            gap: 10,
+            gap: '10px',
           }}
         >
-        <ControlButton onClick={() => props.handleIsMoving(true)} label="進む" bgColor="#00C14D" />
-        <ControlButton onClick={() => props.handleIsMoving(false)} label="止まる" bgColor="#FF2121" />
+          <SpeechBubble>
+            <p style={{ width: '100%', height: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>自由に探索してみよう</p>
+          </SpeechBubble>
+          <div style={{ gap: 10, display: 'flex', flexDirection: 'column' }}>
+            <ControlButton onClick={() => props.handleIsMoving(true)} label="進む" bgColor="#00C14D" />
+            <ControlButton onClick={() => props.handleIsMoving(false)} label="止まる" bgColor="#FF2121" />
+          </div>
         </div>
     </>
   )
