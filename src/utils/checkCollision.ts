@@ -9,9 +9,9 @@ const GROUND_HEIGHT = 0
  */
 function checkCollision(cameraPosition: [number, number, number], velocity: THREE.Vector3): [number, number, number] {
   const newPosition: [number, number, number] = [
-    cameraPosition[0] + velocity.x,
+    Math.max(-5, Math.min(5, cameraPosition[0] + velocity.x)),
     Math.max(GROUND_HEIGHT, cameraPosition[1] + velocity.y),
-    cameraPosition[2] + velocity.z
+    Math.max(-5, Math.min(5, cameraPosition[2] + velocity.z))
   ];
 
   // 衝突判定ロジック
