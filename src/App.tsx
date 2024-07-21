@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react"
+import { isMobile } from "react-device-detect";
 import Game from "./components/Game"
 import Loading from "./components/Loading";
+import PCScreen from "./components/PCScreen";
+import Header from "./components/Header";
 
 const LOADING_TIME = 2000;
 
@@ -25,7 +28,9 @@ function App() {
   return (
     <>
       <Loading isLoading={isLoading} />
-      <Game />
+      <Header />
+      {isMobile ? <PCScreen /> : <Game />}
+      {/* <Game /> */}
     </>
   )
 }

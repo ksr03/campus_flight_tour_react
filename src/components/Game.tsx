@@ -108,15 +108,15 @@ function Game() {
           gap: 10,
         }}
       >
-        <ControlButton onClick={() => setIsMoving(true)} label="START" bgColor="#2194FF" />
-        <ControlButton onClick={() => setIsMoving(false)} label="STOP" bgColor="#FF2121" />
+        <ControlButton onClick={() => setIsMoving(true)} label="進む" bgColor="#00C14D" />
+        <ControlButton onClick={() => setIsMoving(false)} label="止まる" bgColor="#FF2121" />
       </div>
       {/* デバッグ用テキスト */}
       <DebugText>
         <>
           {`cameraPosition: ${cameraPosition[0].toFixed(2).toString()}, ${cameraPosition[1].toFixed(2).toString()}, ${cameraPosition[2].toFixed(2).toString()}`}<br />
           {`cameraRotation: ${cameraRotation[0].toFixed(2).toString()}, ${cameraRotation[1].toFixed(2).toString()}, ${cameraRotation[2].toFixed(2).toString()}`}<br />
-          cameraSpeed: {cameraSpeed}
+          cameraSpeed: {(cameraSpeed * 1000).toFixed(0).toString()}
         </>
       </DebugText>
     </>

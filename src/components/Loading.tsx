@@ -24,7 +24,7 @@ const Loading = ({isLoading}:Props) => {
     >
       <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
         <IoPhonePortraitOutline size={100} color="black" />
-        <p style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>縦画面でプレイしてください</p>
+        <p className="m-plus-rounded-1c-regular" style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>縦画面でプレイしてください</p>
       </div>
     </div>
   )
