@@ -6,7 +6,7 @@ import GameUI from "./GameUI"
 import StartScreen from "./StartScreen"
 
 // カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 3, 4]
+const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 4]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
 
 function Game() {
