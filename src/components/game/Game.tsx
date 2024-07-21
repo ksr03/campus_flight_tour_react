@@ -4,6 +4,7 @@ import Viewport from "../3D/Viewport"
 import DebugText from "./DebugText"
 import GameUI from "./GameUI"
 import StartScreen from "./StartScreen"
+import checkCollision from "../../utils/checkCollision"
 
 // カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 4]
@@ -26,7 +27,6 @@ function Game() {
     // カメラの位置を更新する関数
     const updateCameraPosition = () => {
       const [beta, gamma] = cameraRotation;
-      const [x, y, z] = cameraPosition;
   
       // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
       const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
@@ -36,11 +36,7 @@ function Game() {
       direction.multiplyScalar(cameraSpeed);
   
       // 新しい位置を計算
-      const newPosition: [number, number, number] = [
-        x + direction.x,
-        y + direction.y,
-        z + direction.z
-      ];
+      const newPosition: [number, number, number] = checkCollision(cameraPosition, direction);
   
       setCameraPosition(newPosition);
     };
