@@ -11,8 +11,16 @@ function Viewport (props: Props): JSX.Element {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Canvas>
-        <ambientLight intensity={1.1} />
-        <directionalLight position={[0, 5, 0]} intensity={1} />
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[1, 1, 1]} intensity={1.5} />
+        {/* <Environment preset="city" />
+        <ContactShadows
+        position={[0, -0.8, 0]}
+        opacity={0.75}
+        scale={10}
+        blur={1}
+        far={0.8}
+      /> */}
         <PerspectiveCamera
           makeDefault
           position={props.cameraPosition}
