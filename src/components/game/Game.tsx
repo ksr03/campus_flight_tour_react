@@ -79,7 +79,7 @@ function Game() {
         setCameraSpeed(Math.max(newSpeed, 0));
       }
       updateCameraPosition();
-    }, 1000 / 60);
+    }, 1000 / 40);
 
     // クリーンアップ
     return () => {
