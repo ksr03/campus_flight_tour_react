@@ -28,12 +28,15 @@ const containerStyle: React.CSSProperties = {
     backgroundColor: 'white',
     padding: '10px',
     borderRadius: '15px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   };
   
   const arrowStyle: React.CSSProperties = {
     position: 'absolute',
     top: '50%',
-    left: '-15px',
+    left: '-13px',
     width: '0',
     height: '0',
     borderTop: '10px solid transparent',

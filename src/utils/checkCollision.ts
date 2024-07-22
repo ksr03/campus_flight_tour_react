@@ -1,8 +1,8 @@
 import * as THREE from 'three'
-import collision from '../data/collision'
+import buildings from '../data/buildings'
 
 // 地面の高さ
-const GROUND_HEIGHT = 0
+const GROUND_HEIGHT = 0.5
 
 /**
  * 地面・建物との衝突判定を行う関数
@@ -15,7 +15,7 @@ function checkCollision(cameraPosition: [number, number, number], velocity: THRE
   ];
 
   // 衝突判定ロジック
-  for (const building of collision) {
+  for (const building of buildings) {
     const [sizeX, sizeY, sizeZ] = building.size;
     const [centerX, centerY, centerZ] = building.center;
 
