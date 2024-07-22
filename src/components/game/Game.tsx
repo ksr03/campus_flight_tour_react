@@ -99,7 +99,7 @@ function Game() {
         <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} />
       </div>
       {/* 2D UI */}
-      <GameUI handleIsMoving={handleIsMoving} />
+      <GameUI handleIsMoving={handleIsMoving} isMoving={isMoving} />
       {/* デバッグ用テキスト */}
       <DebugText>
         <>
