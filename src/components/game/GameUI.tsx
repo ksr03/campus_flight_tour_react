@@ -5,6 +5,7 @@ interface Props {
   handleIsMoving: (isMoving: boolean) => void;
   isMoving: boolean;
   speed: string;
+  text: string;
 }
 
 function GameUI (props: Props): JSX.Element {
@@ -26,7 +27,9 @@ function GameUI (props: Props): JSX.Element {
         }}
       >
         <SpeechBubble>
-          <p style={{ width: '100%', height: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>自由に探索してみよう</p>
+          <p style={{ width: '100%', height: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            {props.text}
+          </p>
         </SpeechBubble>
         <div style={{ gap: 10, display: 'flex', flexDirection: 'column' }}>
           <ControlButton onClick={() => props.handleIsMoving(true)} label="進む" bgColor={[0, 193, 77]} isActive={!props.isMoving} />

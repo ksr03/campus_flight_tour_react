@@ -4,6 +4,7 @@ import Viewport from "../3D/Viewport"
 import GameUI from "./GameUI"
 import StartScreen from "./StartScreen"
 import checkCollision from "../../utils/checkCollision"
+import changeText from "../../utils/changeText"
 
 // カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 4]
@@ -21,6 +22,8 @@ function Game() {
   // 前進しているかどうか
   const [isMoving, setIsMoving] = useState<boolean>(false)
   const handleIsMoving = (isMoving: boolean) => setIsMoving(isMoving)
+  // 建物の説明文
+  const [text, setText] = useState<string>('自由に探索してみよう')
 
   useEffect(() => {
     // カメラの位置を更新する関数
@@ -36,6 +39,9 @@ function Game() {
   
       // 新しい位置を計算
       const newPosition: [number, number, number] = checkCollision(cameraPosition, direction);
+
+      // テキストを更新
+      setText(changeText(newPosition));
   
       setCameraPosition(newPosition);
     };
@@ -98,7 +104,7 @@ function Game() {
         <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} />
       </div>
       {/* 2D UI */}
-      <GameUI handleIsMoving={handleIsMoving} isMoving={isMoving} speed={(cameraSpeed * 1000).toFixed(0).toString()} />
+      <GameUI handleIsMoving={handleIsMoving} isMoving={isMoving} speed={(cameraSpeed * 1000).toFixed(0).toString()} text={text} />
     </>
   )
 }
