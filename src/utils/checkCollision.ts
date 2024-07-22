@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import buildings from '../data/buildings'
 
 // 地面の高さ
 const GROUND_HEIGHT = 0.5
@@ -15,26 +14,26 @@ function checkCollision(cameraPosition: [number, number, number], velocity: THRE
   ];
 
   // 衝突判定ロジック
-  for (const building of buildings) {
-    const [sizeX, sizeY, sizeZ] = building.size;
-    const [centerX, centerY, centerZ] = building.center;
+  // for (const building of buildings) {
+  //   const [sizeX, sizeY, sizeZ] = building.size;
+  //   const [centerX, centerY, centerZ] = building.center;
 
-    const minX = centerX - sizeX / 2;
-    const maxX = centerX + sizeX / 2;
-    const minY = centerY - sizeY / 2;
-    const maxY = centerY + sizeY / 2;
-    const minZ = centerZ - sizeZ / 2;
-    const maxZ = centerZ + sizeZ / 2;
+  //   const minX = centerX - sizeX / 2;
+  //   const maxX = centerX + sizeX / 2;
+  //   const minY = centerY - sizeY / 2;
+  //   const maxY = centerY + sizeY / 2;
+  //   const minZ = centerZ - sizeZ / 2;
+  //   const maxZ = centerZ + sizeZ / 2;
 
-    if (
-      newPosition[0] >= minX && newPosition[0] <= maxX &&
-      newPosition[1] >= minY && newPosition[1] <= maxY &&
-      newPosition[2] >= minZ && newPosition[2] <= maxZ
-    ) {
-      // 衝突が検出された場合、移動をキャンセルする
-      return cameraPosition;
-    }
-  }
+  //   if (
+  //     newPosition[0] >= minX && newPosition[0] <= maxX &&
+  //     newPosition[1] >= minY && newPosition[1] <= maxY &&
+  //     newPosition[2] >= minZ && newPosition[2] <= maxZ
+  //   ) {
+  //     // 衝突が検出された場合、移動をキャンセルする
+  //     return cameraPosition;
+  //   }
+  // }
 
   return newPosition
 }
