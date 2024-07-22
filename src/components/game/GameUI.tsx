@@ -1,11 +1,14 @@
 import ControlButton from "./ControlButton";
 import SpeechBubble from "./SpeechBubble";
+import Map from "./Map";
 
 interface Props {
   handleIsMoving: (isMoving: boolean) => void;
   isMoving: boolean;
   speed: string;
   text: string;
+  position: [number, number];
+  rotation: number;
 }
 
 function GameUI (props: Props): JSX.Element {
@@ -50,6 +53,7 @@ function GameUI (props: Props): JSX.Element {
       >
         <span style={{ fontWeight: 'bold' }}>速度</span>: {props.speed} m/s
       </div>
+      <Map position={props.position} rotation={props.rotation} />
     </>
   )
 }
