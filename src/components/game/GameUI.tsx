@@ -1,11 +1,14 @@
 import ControlButton from "./ControlButton";
 import SpeechBubble from "./SpeechBubble";
+import Map from "./Map";
 
 interface Props {
   handleIsMoving: (isMoving: boolean) => void;
   isMoving: boolean;
   speed: string;
   text: string;
+  position: [number, number];
+  rotation: number;
 }
 
 function GameUI (props: Props): JSX.Element {
@@ -27,7 +30,7 @@ function GameUI (props: Props): JSX.Element {
         }}
       >
         <SpeechBubble>
-          <p style={{ width: '100%', height: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <p className="m-plus-rounded-1c-regular" style={{ width: '100%', height: '100%', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 'bold' }}>
             {props.text}
           </p>
         </SpeechBubble>
@@ -50,6 +53,7 @@ function GameUI (props: Props): JSX.Element {
       >
         <span style={{ fontWeight: 'bold' }}>速度</span>: {props.speed} m/s
       </div>
+      <Map position={props.position} rotation={props.rotation} />
     </>
   )
 }

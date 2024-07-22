@@ -104,7 +104,14 @@ function Game() {
         <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} />
       </div>
       {/* 2D UI */}
-      <GameUI handleIsMoving={handleIsMoving} isMoving={isMoving} speed={(cameraSpeed * 1000).toFixed(0).toString()} text={text} />
+      <GameUI
+        handleIsMoving={handleIsMoving}
+        isMoving={isMoving}
+        speed={(cameraSpeed * 1000).toFixed(0).toString()}
+        text={text}
+        position={[cameraPosition[0], cameraPosition[2]]}
+        rotation={cameraRotation[1]}
+      />
     </>
   )
 }
