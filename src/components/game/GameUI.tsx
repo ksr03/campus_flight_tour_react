@@ -3,6 +3,7 @@ import SpeechBubble from "./SpeechBubble";
 
 interface Props {
   handleIsMoving: (isMoving: boolean) => void;
+  isMoving: boolean;
 }
 
 function GameUI (props: Props): JSX.Element {
@@ -27,8 +28,8 @@ function GameUI (props: Props): JSX.Element {
           <p style={{ width: '100%', height: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>自由に探索してみよう</p>
         </SpeechBubble>
         <div style={{ gap: 10, display: 'flex', flexDirection: 'column' }}>
-          <ControlButton onClick={() => props.handleIsMoving(true)} label="進む" bgColor="#00C14D" />
-          <ControlButton onClick={() => props.handleIsMoving(false)} label="止まる" bgColor="#FF2121" />
+          <ControlButton onClick={() => props.handleIsMoving(true)} label="進む" bgColor={[0, 193, 77]} isActive={!props.isMoving} />
+          <ControlButton onClick={() => props.handleIsMoving(false)} label="止まる" bgColor={[255, 33, 33]} isActive={props.isMoving} />
         </div>
       </div>
     </>
