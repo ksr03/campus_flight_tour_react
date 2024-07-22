@@ -30,7 +30,7 @@ function GameUI (props: Props): JSX.Element {
         }}
       >
         <SpeechBubble>
-          <p style={{ width: '100%', height: '100%', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <p className="m-plus-rounded-1c-regular" style={{ width: '100%', height: '100%', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 'bold' }}>
             {props.text}
           </p>
         </SpeechBubble>

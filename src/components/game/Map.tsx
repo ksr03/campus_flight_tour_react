@@ -4,7 +4,6 @@ interface Props {
 }
 
 function Map (props: Props): JSX.Element {
-    console.log(props.rotation)
   return (
     <div
       style={{
