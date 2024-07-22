@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import collision from '../data/collision'
 
 // 地面の高さ
-const GROUND_HEIGHT = 0
+const GROUND_HEIGHT = 0.5
 
 /**
  * 地面・建物との衝突判定を行う関数

@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import * as THREE from 'three'
 import Viewport from "../3D/Viewport"
-import DebugText from "./DebugText"
 import GameUI from "./GameUI"
 import StartScreen from "./StartScreen"
 import checkCollision from "../../utils/checkCollision"
@@ -99,15 +98,7 @@ function Game() {
         <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} />
       </div>
       {/* 2D UI */}
-      <GameUI handleIsMoving={handleIsMoving} isMoving={isMoving} />
-      {/* デバッグ用テキスト */}
-      <DebugText>
-        <>
-          {`cameraPosition: ${cameraPosition[0].toFixed(2).toString()}, ${cameraPosition[1].toFixed(2).toString()}, ${cameraPosition[2].toFixed(2).toString()}`}<br />
-          {`cameraRotation: ${cameraRotation[0].toFixed(2).toString()}, ${cameraRotation[1].toFixed(2).toString()}, ${cameraRotation[2].toFixed(2).toString()}`}<br />
-          cameraSpeed: {(cameraSpeed * 1000).toFixed(0).toString()}
-        </>
-      </DebugText>
+      <GameUI handleIsMoving={handleIsMoving} isMoving={isMoving} speed={(cameraSpeed * 1000).toFixed(0).toString()} />
     </>
   )
 }
