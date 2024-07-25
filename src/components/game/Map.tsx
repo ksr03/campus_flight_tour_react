@@ -29,7 +29,7 @@ function Map (props: Props): JSX.Element {
         }}
       >
         <img
-          src='/images/map.jpg'
+          src='/images/map.png'
           style={{
             position: 'relative',
             objectFit: 'cover',
@@ -43,7 +43,7 @@ function Map (props: Props): JSX.Element {
             position: 'absolute',
             width: '20px',
             height: '20px',
-            transform: `translate(${props.position[0] * 10}px, ${props.position[1] * 10}px) rotate(${-props.rotation * 180 / Math.PI}deg)`,
+            transform: `translate(${props.position[0] * 11.1}px, ${props.position[1] * 11.1}px) rotate(${-props.rotation * 180 / Math.PI}deg)`,
           }}
         />
       </div>
