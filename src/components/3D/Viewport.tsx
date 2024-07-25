@@ -11,7 +11,7 @@ function Viewport (props: Props): JSX.Element {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Canvas>
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={2} />
         <directionalLight position={[1, 1, 1]} intensity={1.5} />
         {/* <Environment preset="city" />
         <ContactShadows
