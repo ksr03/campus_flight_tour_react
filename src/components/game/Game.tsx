@@ -31,7 +31,7 @@ function Game() {
       const [beta, gamma] = cameraRotation;
   
       // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
-      const direction = new THREE.Vector3(...cameraRotation); // カメラの前方方向を表す
+      const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
       direction.applyEuler(new THREE.Euler(beta, gamma, 0)); // 回転を適用
   
       // 移動量を計算
@@ -53,7 +53,7 @@ function Game() {
       const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
       const alphaRad = cameraRotation[1] + gammaRad / 40;
 
-      setCameraRotation([betaRad, alphaRad, gammaRad]);
+      setCameraRotation([betaRad + alphaRad / Math.PI, alphaRad, gammaRad]);
     };
 
     const requestPermission = async () => {
