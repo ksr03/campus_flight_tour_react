@@ -53,7 +53,7 @@ function Game() {
       const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
       const alphaRad = cameraRotation[1] + gammaRad / 40;
 
-      setCameraRotation([betaRad + alphaRad / Math.PI, alphaRad, gammaRad]);
+      setCameraRotation([betaRad - alphaRad / Math.PI, alphaRad, gammaRad]);
     };
 
     const requestPermission = async () => {
