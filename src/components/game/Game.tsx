@@ -31,7 +31,7 @@ function Game() {
       const [beta, gamma] = cameraRotation;
   
       // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
-      const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
+      const direction = new THREE.Vector3(...cameraRotation); // カメラの前方方向を表す
       direction.applyEuler(new THREE.Euler(beta, gamma, 0)); // 回転を適用
   
       // 移動量を計算
