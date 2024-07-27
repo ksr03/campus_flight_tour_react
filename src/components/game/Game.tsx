@@ -56,36 +56,35 @@ function Game() {
       setCameraRotation([betaRad, alphaRad, gammaRad]);
     };
 
-    const handleDeviceMotion = (event: DeviceMotionEvent) => {
-      const { rotationRate } = event;
-      if (rotationRate) {
-        const { beta, gamma } = rotationRate;
+    // const handleDeviceMotion = (event: DeviceMotionEvent) => {
+    //   const { rotationRate } = event;
+    //   if (rotationRate) {
+    //     const { beta, gamma } = rotationRate;
 
-        const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
-        const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
-        const alphaRad = cameraRotation[1] + gammaRad / 40;
+    //     const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
+    //     const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
+    //     const alphaRad = cameraRotation[1] + gammaRad / 40;
 
-        setCameraRotation([betaRad, alphaRad, gammaRad]);
-      }
-    }
+    //     setCameraRotation([betaRad, alphaRad, gammaRad]);
+    //   }
+    // }
 
     const requestPermission = async () => {
-      // Check if requestPermission method exists on DeviceOrientationEvent
+      // DeviceorientationEventの許可が必要な場合の処理
       if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<'granted' | 'denied'> }).requestPermission === 'function') {
         try {
-          // Request permission
           const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<'granted' | 'denied'> }).requestPermission();
           if (response === 'granted') {
-            // Add event listener if permission is granted
+            // パーミッションが許可された場合はイベントリスナーを追加
             window.addEventListener('deviceorientation', handleDeviceOrientation);
           }
         } catch (error) {
           console.error('Device orientation permission request failed:', error);
         }
       } else {
-        // Directly add event listener for devices that do not require permission
+        // パーミッションが不要な場合はイベントリスナーを追加
         window.addEventListener('deviceorientation', handleDeviceOrientation);
-        window.addEventListener('devicemotion', handleDeviceMotion);
+        // window.addEventListener('devicemotion', handleDeviceMotion);
       }
     };
   
