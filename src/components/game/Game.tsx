@@ -25,6 +25,8 @@ function Game() {
   // 建物の説明文
   const [text, setText] = useState<string>('自由に探索してみよう')
 
+  const [test, setTest] = useState<boolean>(false)
+
   useEffect(() => {
     // カメラの位置を更新する関数
     const updateCameraPosition = () => {
@@ -85,6 +87,7 @@ function Game() {
         // パーミッションが不要な場合はイベントリスナーを追加
         window.addEventListener('deviceorientation', handleDeviceOrientation);
         // window.addEventListener('devicemotion', handleDeviceMotion);
+        setTest(true)
       }
     };
   
@@ -127,6 +130,9 @@ function Game() {
         position={[cameraPosition[0], cameraPosition[2]]}
         rotation={cameraRotation[1]}
       />
+      <div style={{ position: 'fixed', top: '0', right: '0', zIndex: 1000 }}>
+        <p>{test ? 'true' : 'false'}</p>
+      </div>
     </>
   )
 }
