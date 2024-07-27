@@ -4,9 +4,9 @@ import Viewport from "../3D/Viewport"
 import GameUI from "./GameUI"
 import StartScreen from "./StartScreen"
 import checkCollision from "../../utils/checkCollision"
-import changeText from "../../utils/changeText"
+import getText from "../../utils/getText"
 
-// カメラの初期位置と回転
+/// カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 4]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
 
@@ -27,72 +27,64 @@ function Game() {
 
   const [test, setTest] = useState<string>('none')
 
-  useEffect(() => {
-    // カメラの位置を更新する関数
-    const updateCameraPosition = () => {
-      const [beta, gamma] = cameraRotation;
-  
-      // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
-      const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
-      direction.applyEuler(new THREE.Euler(beta, gamma, 0)); // 回転を適用
-  
-      // 移動量を計算
-      direction.multiplyScalar(cameraSpeed);
-  
-      // 新しい位置を計算
-      const newPosition: [number, number, number] = checkCollision(cameraPosition, direction);
+  /**
+   * デバイスの向きが変わったときのイベントハンドラ
+   */
+  const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+    const { beta, gamma } = event;
 
-      // テキストを更新
-      setText(changeText(newPosition));
-  
-      setCameraPosition(newPosition);
-    };
-  
-    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-      const { beta, gamma } = event;
+    const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
+    const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
+    const alphaRad = cameraRotation[1] + gammaRad / 40;
 
-      const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
-      const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
-      const alphaRad = cameraRotation[1] + gammaRad / 40;
+    setCameraRotation([betaRad, alphaRad, gammaRad]);
+    setTest(beta?.toFixed(0).toString() ?? 'null');
+  };
 
-      setCameraRotation([betaRad, alphaRad, gammaRad]);
-      setTest(beta?.toFixed(0).toString() ?? 'null');
-    };
-
-    // const handleDeviceMotion = (event: DeviceMotionEvent) => {
-    //   const { rotationRate } = event;
-    //   if (rotationRate) {
-    //     const { beta, gamma } = rotationRate;
-
-    //     const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
-    //     const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
-    //     const alphaRad = cameraRotation[1] + gammaRad / 40;
-
-    //     setCameraRotation([betaRad, alphaRad, gammaRad]);
-    //   }
-    // }
-
-    const requestPermission = async () => {
-      // DeviceorientationEventの許可が必要な場合の処理
-      if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<'granted' | 'denied'> }).requestPermission === 'function') {
-        try {
-          const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<'granted' | 'denied'> }).requestPermission();
-          if (response === 'granted') {
-            // パーミッションが許可された場合はイベントリスナーを追加
-            window.addEventListener('deviceorientation', handleDeviceOrientation);
-          }
-        } catch (error) {
-          console.error('Device orientation permission request failed:', error);
+  /**
+   * センサーの許可をリクエストする関数
+   */
+  const requestPermission = async () => {
+    // DeviceorientationEventの許可が必要な場合の処理
+    if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<'granted' | 'denied'> }).requestPermission === 'function') {
+      try {
+        const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<'granted' | 'denied'> }).requestPermission();
+        if (response === 'granted') {
+          // パーミッションが許可された場合はイベントリスナーを追加
+          window.addEventListener('deviceorientation', handleDeviceOrientation);
         }
-      } else {
-        // パーミッションが不要な場合はイベントリスナーを追加
-        window.addEventListener('deviceorientation', handleDeviceOrientation);
-        // window.addEventListener('devicemotion', handleDeviceMotion);
+      } catch (error) {
+        console.error('Device orientation permission request failed:', error);
       }
-    };
-  
-    requestPermission();
+    } else {
+      // パーミッションが不要な場合はイベントリスナーを追加
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    }
+  };
 
+  /**
+   * カメラの位置を更新する関数
+   */
+  const updateCameraPosition = () => {
+    const [beta, gamma] = cameraRotation;
+
+    // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
+    const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
+    direction.applyEuler(new THREE.Euler(beta, gamma, 0)); // 回転を適用
+
+    // 移動量を計算
+    direction.multiplyScalar(cameraSpeed);
+
+    // 新しい位置を計算
+    const newPosition: [number, number, number] = checkCollision(cameraPosition, direction);
+
+    // テキストを更新
+    setText(getText(newPosition));
+
+    setCameraPosition(newPosition);
+  };
+
+  useEffect(() => {
     timerRef.current = setInterval(() => {
       if (isMoving) {
         const newSpeed = cameraSpeed + 0.0002;
@@ -104,14 +96,18 @@ function Game() {
       updateCameraPosition();
     }, 1000 / 60);
 
-    // クリーンアップ
     return () => {
       window.removeEventListener("deviceorientation", handleDeviceOrientation);
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
     };
-  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving, isStarted]);
+  }, []);
+
+  // ゲームスタート時にデバイスの許可をリクエスト
+  useEffect(() => {
+    requestPermission();
+  }, [isStarted]);
 
   return (
     <>
@@ -131,7 +127,8 @@ function Game() {
         rotation={cameraRotation[1]}
       />
       <div style={{ position: 'fixed', top: '0', right: '0', zIndex: 1000 }}>
-        <p>{test}</p>
+        <p>{'test: '+test}</p>
+        <p>{'cameraRotation'+cameraRotation}</p>
       </div>
     </>
   )

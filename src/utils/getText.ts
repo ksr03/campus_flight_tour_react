@@ -3,7 +3,7 @@ import buildings from '../data/buildings'
 /**
  * 近くにある建物の説明文を返す関数
  */
-function changeText(cameraPosition: [number, number, number]): string {
+function getText(cameraPosition: [number, number, number]): string {
   let nearestBuilding = null
 
   // 最も近い建物を探す
@@ -25,4 +25,4 @@ function changeText(cameraPosition: [number, number, number]): string {
   return '自由に探索してみよう'
 }
 
-export default changeText
+export default getText
