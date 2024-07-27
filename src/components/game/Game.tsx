@@ -8,7 +8,7 @@ import getText from "../../utils/getText"
 
 /// カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 0]
-const INITIAL_CAMERA_ROTATION: [number, number, number] = [0, 0, 0]
+const INITIAL_CAMERA_ROTATION: [number, number, number] = [Math.PI / 4, 0, 0]
 
 function Game() {
   const timerRef = useRef<number | null>(null);
@@ -26,7 +26,7 @@ function Game() {
   // 建物の説明文
   const [text, setText] = useState<string>('自由に探索してみよう')
 
-  const [test, setTest] = useState<string>('none')
+  // const [test, setTest] = useState<string>('none')
 
   /**
    * デバイスの向きからカメラの回転を更新する関数
@@ -34,13 +34,13 @@ function Game() {
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
     const { alpha, beta } = event;
 
-    const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
+    const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
     // const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
     const gammaRad = 0;
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
 
     setCameraRotation([betaRad, alphaRad, gammaRad]);
-    setTest(beta?.toFixed(0).toString() ?? 'null');
+    // setTest(beta?.toFixed(0).toString() ?? 'null');
   };
 
   /**
@@ -131,10 +131,10 @@ function Game() {
         position={[cameraPosition[0], cameraPosition[2]]}
         rotation={cameraRotation[1]}
       />
-      <div style={{ position: 'fixed', top: '0', right: '0', zIndex: 1000 }}>
+      {/* <div style={{ position: 'fixed', top: '0', right: '0', zIndex: 1000 }}>
         <p>{'test: '+test}</p>
         <p>{'cameraRotation'+cameraRotation}</p>
-      </div>
+      </div> */}
     </>
   )
 }
