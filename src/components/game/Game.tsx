@@ -8,7 +8,7 @@ import getText from "../../utils/getText"
 
 /// カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 0]
-const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
+const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 2, 0, 0]
 
 function Game() {
   const timerRef = useRef<number | null>(null);
@@ -34,7 +34,7 @@ function Game() {
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
     const { alpha, beta } = event;
 
-    const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
+    const betaRad = Math.max(-Math.PI + 0.01, Math.min(-Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0), -0.01));
     // const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
     const gammaRad = 0;
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
