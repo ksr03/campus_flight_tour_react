@@ -110,6 +110,7 @@ function Game() {
     if (!hasSensorPermissionRef) {
       requestPermission();
     }
+    window.addEventListener('deviceorientation', handleDeviceOrientation);
 
     timerRef.current = setInterval(() => {
       if (isMoving) {
