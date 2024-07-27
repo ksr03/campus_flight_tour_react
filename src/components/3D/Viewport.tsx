@@ -1,6 +1,7 @@
-import { PerspectiveCamera } from '@react-three/drei'
+// import { PerspectiveCamera } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import CampusModel from './CampusModel'
+// import CampusModel from './CampusModel'
+import CanvasContents from './CanvasContents'
 import { Euler } from 'three'
 
 interface Props {
@@ -12,7 +13,7 @@ function Viewport (props: Props): JSX.Element {
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Canvas>
-        <ambientLight intensity={2} />
+        {/* <ambientLight intensity={2} />
         <directionalLight position={[1, 1, 1]} intensity={1.5} />
         <PerspectiveCamera
           makeDefault
@@ -22,7 +23,8 @@ function Viewport (props: Props): JSX.Element {
           near={0.1}
           far={100}
         />
-        <CampusModel/>
+        <CampusModel/> */}
+        <CanvasContents cameraPosition={props.cameraPosition} cameraRotation={props.cameraRotation} />
       </Canvas>
     </div>
   )
