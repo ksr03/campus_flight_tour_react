@@ -42,7 +42,7 @@ function Game() {
 
   // スマートフォンの向きをThree.jsのカメラの回転に変換
   const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
-  const betaRad = THREE.MathUtils.degToRad(beta ?? 0);
+  const betaRad = THREE.MathUtils.degToRad(beta ?? 0) - Math.PI / 2;
   const gammaRad = THREE.MathUtils.degToRad(gamma ?? 0);
 
   // 回転行列を作成
