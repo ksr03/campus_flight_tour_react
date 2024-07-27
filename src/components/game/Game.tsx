@@ -84,7 +84,7 @@ function Game() {
     setCameraPosition(newPosition);
   };
 
-  useEffect(() => {
+  useEffect(() => {  
     timerRef.current = setInterval(() => {
       if (isMoving) {
         const newSpeed = cameraSpeed + 0.0002;
@@ -95,7 +95,10 @@ function Game() {
       }
       updateCameraPosition();
     }, 1000 / 60);
+  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving, isStarted]);
 
+  // ゲーム終了時にイベントリスナーを削除
+  useEffect(() => {
     return () => {
       window.removeEventListener("deviceorientation", handleDeviceOrientation);
       if (timerRef.current) {
