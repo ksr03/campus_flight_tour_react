@@ -10,17 +10,7 @@ import changeText from "../../utils/changeText"
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 4]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
 
-interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
-  requestPermission?: () => Promise<'granted' | 'denied'>;
-}
-
 function Game() {
-  // センサーの使用許可があるかどうか
-  const deviceOrientationEvent = DeviceOrientationEvent as unknown as DeviceOrientationEventiOS;
-  const hasSensorPermissionRef = useRef<boolean>(
-    !(deviceOrientationEvent.requestPermission || 
-      deviceOrientationEvent.requestPermission));
-
   const timerRef = useRef<number | null>(null);
   const [isStarted, setIsStarted] = useState<boolean>(false);
   // カメラの位置
@@ -66,51 +56,40 @@ function Game() {
       setCameraRotation([betaRad, alphaRad, gammaRad]);
     };
 
+    const handleDeviceMotion = (event: DeviceMotionEvent) => {
+      const { rotationRate } = event;
+      if (rotationRate) {
+        const { beta, gamma } = rotationRate;
+
+        const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
+        const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
+        const alphaRad = cameraRotation[1] + gammaRad / 40;
+
+        setCameraRotation([betaRad, alphaRad, gammaRad]);
+      }
+    }
+
     const requestPermission = async () => {
-      // // DeviceOrientationEventのrequestPermissionメソッドがあるかどうかで、デバイスの許可が必要かどうかを判断
-      // if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<'granted' | 'denied'> }).requestPermission === 'function') {
-      //   try {
-      //     // デバイスの許可をリクエスト
-      //     const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<'granted' | 'denied'> }).requestPermission();
-      //     if (response === 'granted') {
-      //       // 許可された場合はイベントリスナーを追加
-      //       window.addEventListener('deviceorientation', handleDeviceOrientation);
-      //     }
-      //   } catch (error) {
-      //     console.error('Device orientation permission request failed:', error);
-      //   }
-      // } else {
-      //   // リクエストメソッドがない場合はイベントリスナーを追加
-      //   window.addEventListener('deviceorientation', handleDeviceOrientation);
-      // }
-      if (deviceOrientationEvent.requestPermission){
-        deviceOrientationEvent.requestPermission()
-        // 順番に実行
-        .then(response => {
-          // DeviceOrientationEventの使用が許可された
-          if (response == 'granted') {
-            if (deviceOrientationEvent.requestPermission){
-              deviceOrientationEvent.requestPermission()
-              .then(response => {
-                // DeviceMotionEventの使用が許可された
-                if (response == 'granted') {
-                  hasSensorPermissionRef.current = true;
-                }
-              })
-              // エラー内容の表示
-              .catch(alert)
-            }
+      // Check if requestPermission method exists on DeviceOrientationEvent
+      if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<'granted' | 'denied'> }).requestPermission === 'function') {
+        try {
+          // Request permission
+          const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<'granted' | 'denied'> }).requestPermission();
+          if (response === 'granted') {
+            // Add event listener if permission is granted
+            window.addEventListener('deviceorientation', handleDeviceOrientation);
           }
-        })
-        .catch(alert)
+        } catch (error) {
+          console.error('Device orientation permission request failed:', error);
+        }
+      } else {
+        // Directly add event listener for devices that do not require permission
+        window.addEventListener('deviceorientation', handleDeviceOrientation);
+        window.addEventListener('devicemotion', handleDeviceMotion);
       }
     };
   
-    // requestPermission();
-    if (!hasSensorPermissionRef.current) {
-      requestPermission();
-    }
-    window.addEventListener('deviceorientation', handleDeviceOrientation);
+    requestPermission();
 
     timerRef.current = setInterval(() => {
       if (isMoving) {
