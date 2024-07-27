@@ -1,5 +1,5 @@
 import { PerspectiveCamera } from '@react-three/drei'
-import { Canvas, useThree } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import CampusModel from './CampusModel'
 import { Euler } from 'three'
 
@@ -9,8 +9,6 @@ interface Props {
 }
 
 function Viewport (props: Props): JSX.Element {
-  const { camera } = useThree()
-  camera.rotation.copy(props.cameraRotation)
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Canvas>
