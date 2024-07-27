@@ -57,22 +57,23 @@ function Game() {
     };
 
     const requestPermission = async () => {
-      // DeviceOrientationEventのrequestPermissionメソッドがあるかどうかで、デバイスの許可が必要かどうかを判断
-      if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<'granted' | 'denied'> }).requestPermission === 'function') {
-        try {
-          // デバイスの許可をリクエスト
-          const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<'granted' | 'denied'> }).requestPermission();
-          if (response === 'granted') {
-            // 許可された場合はイベントリスナーを追加
-            window.addEventListener('deviceorientation', handleDeviceOrientation);
-          }
-        } catch (error) {
-          console.error('Device orientation permission request failed:', error);
-        }
-      } else {
-        // リクエストメソッドがない場合はイベントリスナーを追加
-        window.addEventListener('deviceorientation', handleDeviceOrientation);
-      }
+      // // DeviceOrientationEventのrequestPermissionメソッドがあるかどうかで、デバイスの許可が必要かどうかを判断
+      // if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<'granted' | 'denied'> }).requestPermission === 'function') {
+      //   try {
+      //     // デバイスの許可をリクエスト
+      //     const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<'granted' | 'denied'> }).requestPermission();
+      //     if (response === 'granted') {
+      //       // 許可された場合はイベントリスナーを追加
+      //       window.addEventListener('deviceorientation', handleDeviceOrientation);
+      //     }
+      //   } catch (error) {
+      //     console.error('Device orientation permission request failed:', error);
+      //   }
+      // } else {
+      //   // リクエストメソッドがない場合はイベントリスナーを追加
+      //   window.addEventListener('deviceorientation', handleDeviceOrientation);
+      // }
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
     };
   
     requestPermission();
