@@ -136,6 +136,9 @@ function Game() {
         position={[cameraPosition[0], cameraPosition[2]]}
         // rotation={cameraRotation[1]}
       />
+      <div style={{ position: 'fixed', top: 0, right: 0, padding: '5px', color: 'black', fontSize: '1rem', zIndex: 1000 }}>
+        <span style={{ fontWeight: 'bold' }}>test</span>: {cameraRotation} m/s
+      </div>
     </>
   )
 }
