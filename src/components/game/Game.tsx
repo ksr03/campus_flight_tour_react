@@ -36,7 +36,7 @@ function Game() {
     const gammaRad = THREE.MathUtils.degToRad(gamma ?? 0);
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
 
-    setCameraRotation([betaRad, alphaRad, gammaRad]);
+    setCameraRotation([betaRad, alphaRad, -gammaRad]);
   };
 
   /**
