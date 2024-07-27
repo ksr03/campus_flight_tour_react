@@ -7,8 +7,7 @@ import checkCollision from "../../utils/checkCollision"
 import getText from "../../utils/getText"
 
 /// カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 0]
-// const INITIAL_CAMERA_ROTATION: THREE.Euler = new THREE.Euler(0, 0, 0, 'YXZ')
+const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.5, 0]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [0, 0, 0]
 
 function Game() {
@@ -18,7 +17,6 @@ function Game() {
   // カメラの位置
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
   // カメラの回転
-  // const [cameraRotation, setCameraRotation] = useState<THREE.Euler>(INITIAL_CAMERA_ROTATION)
   const [cameraRotation, setCameraRotation] = useState<[number, number, number]>(INITIAL_CAMERA_ROTATION)
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
@@ -40,16 +38,6 @@ function Game() {
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
 
     setCameraRotation([betaRad, alphaRad, gammaRad]);
-  //   const { alpha, beta, gamma } = event;
-
-  // // スマートフォンの向きをThree.jsのカメラの回転に変換
-  // const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
-  // const betaRad = THREE.MathUtils.degToRad(beta ?? 0) - Math.PI / 2;
-  // const gammaRad = THREE.MathUtils.degToRad(gamma ?? 0);
-
-  // // 回転行列を作成
-  // const rotation = new THREE.Euler(betaRad, alphaRad, -gammaRad, 'YXZ');
-  // setCameraRotation(rotation);
   };
 
   /**
@@ -77,8 +65,8 @@ function Game() {
    * カメラの位置を更新する関数
    */
   const updateCameraPosition = () => {
-    // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
     const [beta, alpha, gamma] = cameraRotation;
+    // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
     const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
     direction.applyEuler(new THREE.Euler(beta, alpha, gamma, 'YXZ'));
 
@@ -137,7 +125,7 @@ function Game() {
         speed={(cameraSpeed * 1000).toFixed(0).toString()}
         text={text}
         position={[cameraPosition[0], cameraPosition[2]]}
-        // rotation={cameraRotation[1]}
+        rotation={cameraRotation[1]}
       />
       <div style={{ position: 'fixed', top: 0, right: 0, padding: '5px', color: 'black', fontSize: '1rem', zIndex: 1000 }}>
         <span style={{ fontWeight: 'bold' }}>test</span>: {cameraRotation} m/s
