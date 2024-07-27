@@ -2,11 +2,10 @@
 import { Canvas } from '@react-three/fiber'
 // import CampusModel from './CampusModel'
 import CanvasContents from './CanvasContents'
-import { Euler } from 'three'
 
 interface Props {
   cameraPosition: [number, number, number]
-  cameraRotation: Euler
+  cameraRotation: [number, number, number]
 }
 
 function Viewport (props: Props): JSX.Element {

@@ -5,12 +5,13 @@ import { Euler } from "three";
 
 interface Props {
     cameraPosition: [number, number, number]
-    cameraRotation: Euler
+    cameraRotation: [number, number, number]
     }
 
 function CanvasContents(props: Props) {
     const { camera } = useThree()
-    camera.rotation.copy(props.cameraRotation)
+    const rotation = new Euler(props.cameraRotation[0], props.cameraRotation[1], props.cameraRotation[2], 'YXZ')
+    camera.rotation.copy(rotation)
     return (
     <>
     <ambientLight intensity={2} />
