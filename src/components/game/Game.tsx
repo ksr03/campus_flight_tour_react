@@ -10,7 +10,17 @@ import changeText from "../../utils/changeText"
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 4]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
 
+interface DeviceOrientationEventiOS extends DeviceOrientationEvent {
+  requestPermission?: () => Promise<'granted' | 'denied'>;
+}
+
 function Game() {
+  // センサーの使用許可があるかどうか
+  const deviceOrientationEvent = DeviceOrientationEvent as unknown as DeviceOrientationEventiOS;
+  const hasSensorPermissionRef = useRef<boolean>(
+    !(deviceOrientationEvent.requestPermission || 
+      deviceOrientationEvent.requestPermission));
+
   const timerRef = useRef<number | null>(null);
   const [isStarted, setIsStarted] = useState<boolean>(false);
   // カメラの位置
@@ -73,10 +83,33 @@ function Game() {
       //   // リクエストメソッドがない場合はイベントリスナーを追加
       //   window.addEventListener('deviceorientation', handleDeviceOrientation);
       // }
-      window.addEventListener('deviceorientation', handleDeviceOrientation);
+      if (deviceOrientationEvent.requestPermission){
+        deviceOrientationEvent.requestPermission()
+        // 順番に実行
+        .then(response => {
+          // DeviceOrientationEventの使用が許可された
+          if (response == 'granted') {
+            if (deviceOrientationEvent.requestPermission){
+              deviceOrientationEvent.requestPermission()
+              .then(response => {
+                // DeviceMotionEventの使用が許可された
+                if (response == 'granted') {
+                  hasSensorPermissionRef.current = true;
+                }
+              })
+              // エラー内容の表示
+              .catch(alert)
+            }
+          }
+        })
+        .catch(alert)
+      }
     };
   
-    requestPermission();
+    // requestPermission();
+    if (!hasSensorPermissionRef) {
+      requestPermission();
+    }
 
     timerRef.current = setInterval(() => {
       if (isMoving) {
