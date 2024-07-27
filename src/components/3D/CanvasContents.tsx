@@ -19,7 +19,6 @@ function CanvasContents(props: Props) {
         <PerspectiveCamera
           makeDefault
           position={props.cameraPosition}
-          // rotation={props.cameraRotation}
           fov={100}
           near={0.1}
           far={100}
