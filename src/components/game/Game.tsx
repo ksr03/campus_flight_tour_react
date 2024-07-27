@@ -56,6 +56,7 @@ function Game() {
       const alphaRad = cameraRotation[1] + gammaRad / 40;
 
       setCameraRotation([betaRad, alphaRad, gammaRad]);
+      setTest(true)
     };
 
     // const handleDeviceMotion = (event: DeviceMotionEvent) => {
@@ -87,7 +88,6 @@ function Game() {
         // パーミッションが不要な場合はイベントリスナーを追加
         window.addEventListener('deviceorientation', handleDeviceOrientation);
         // window.addEventListener('devicemotion', handleDeviceMotion);
-        setTest(true)
       }
     };
   
