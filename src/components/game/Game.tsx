@@ -107,7 +107,7 @@ function Game() {
     };
   
     // requestPermission();
-    if (!hasSensorPermissionRef) {
+    if (!hasSensorPermissionRef.current) {
       requestPermission();
     }
     window.addEventListener('deviceorientation', handleDeviceOrientation);
