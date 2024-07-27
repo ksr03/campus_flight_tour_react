@@ -12,6 +12,7 @@ const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
 
 function Game() {
   const timerRef = useRef<number | null>(null);
+  // ゲーム画面が表示されているかどうか
   const [isStarted, setIsStarted] = useState<boolean>(false);
   // カメラの位置
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
@@ -31,10 +32,12 @@ function Game() {
    * デバイスの向きからカメラの回転を更新する関数
    */
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-    const { alpha, beta, gamma } = event;
+    const { alpha, beta } = event;
 
-    const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
-    const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
+    // const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
+    const betaRad = 0;
+    // const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
+    const gammaRad = 0;
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
 
     setCameraRotation([betaRad, alphaRad, gammaRad]);
