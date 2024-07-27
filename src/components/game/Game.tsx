@@ -8,7 +8,7 @@ import getText from "../../utils/getText"
 
 /// カメラの初期位置と回転
 const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 0]
-const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 2, 0, 0]
+const INITIAL_CAMERA_ROTATION: THREE.Euler = new THREE.Euler(0, 0, 0, 'YXZ')
 
 function Game() {
   const timerRef = useRef<number | null>(null);
@@ -17,7 +17,7 @@ function Game() {
   // カメラの位置
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
   // カメラの回転
-  const [cameraRotation, setCameraRotation] = useState<[number, number, number]>(INITIAL_CAMERA_ROTATION)
+  const [cameraRotation, setCameraRotation] = useState<THREE.Euler>(INITIAL_CAMERA_ROTATION)
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
   // 前進しているかどうか
@@ -26,22 +26,28 @@ function Game() {
   // 建物の説明文
   const [text, setText] = useState<string>('自由に探索してみよう')
 
-  // const [test, setTest] = useState<string>('none')
-
   /**
    * デバイスの向きからカメラの回転を更新する関数
    */
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-    const { beta } = event;
+    // const { alpha, beta } = event;
 
-    const betaRad = Math.max(-Math.PI / 2, Math.min(-Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 2));
-    // const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
-    const gammaRad = 0;
+    // const betaRad = Math.max(-Math.PI / 2, Math.min(-Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 2));
+    // // const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
+    // const gammaRad = 0;
     // const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
-    const alphaRad = 0;
 
-    setCameraRotation([betaRad, alphaRad, gammaRad]);
-    // setTest(beta?.toFixed(0).toString() ?? 'null');
+    // setCameraRotation([betaRad, alphaRad, gammaRad]);
+    const { alpha, beta, gamma } = event;
+
+  // スマートフォンの向きをThree.jsのカメラの回転に変換
+  const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
+  const betaRad = THREE.MathUtils.degToRad(beta ?? 0);
+  const gammaRad = THREE.MathUtils.degToRad(gamma ?? 0);
+
+  // 回転行列を作成
+  const rotation = new THREE.Euler(betaRad, alphaRad, -gammaRad, 'YXZ');
+  setCameraRotation(rotation);
   };
 
   /**
@@ -69,11 +75,9 @@ function Game() {
    * カメラの位置を更新する関数
    */
   const updateCameraPosition = () => {
-    const [beta, gamma] = cameraRotation;
-
     // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
     const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
-    direction.applyEuler(new THREE.Euler(beta, gamma, 0)); // 回転を適用
+    direction.applyEuler(cameraRotation); // 回転を適用
 
     // 移動量を計算
     direction.multiplyScalar(cameraSpeed);
@@ -130,12 +134,8 @@ function Game() {
         speed={(cameraSpeed * 1000).toFixed(0).toString()}
         text={text}
         position={[cameraPosition[0], cameraPosition[2]]}
-        rotation={cameraRotation[1]}
+        // rotation={cameraRotation[1]}
       />
-      {/* <div style={{ position: 'fixed', top: '0', right: '0', zIndex: 1000 }}>
-        <p>{'test: '+test}</p>
-        <p>{'cameraRotation'+cameraRotation}</p>
-      </div> */}
     </>
   )
 }

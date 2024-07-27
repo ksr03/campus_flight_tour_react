@@ -8,7 +8,7 @@ interface Props {
   speed: string;
   text: string;
   position: [number, number];
-  rotation: number;
+  // rotation: number;
 }
 
 function GameUI (props: Props): JSX.Element {
@@ -53,7 +53,7 @@ function GameUI (props: Props): JSX.Element {
       >
         <span style={{ fontWeight: 'bold' }}>速度</span>: {props.speed} m/s
       </div>
-      <Map position={props.position} rotation={props.rotation} />
+      <Map position={props.position} rotation={0} />
     </>
   )
 }

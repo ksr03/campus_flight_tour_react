@@ -1,30 +1,25 @@
 import { PerspectiveCamera } from '@react-three/drei'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useThree } from '@react-three/fiber'
 import CampusModel from './CampusModel'
+import { Euler } from 'three'
 
 interface Props {
   cameraPosition: [number, number, number]
-  cameraRotation: [number, number, number]
+  cameraRotation: Euler
 }
 
 function Viewport (props: Props): JSX.Element {
+  const { camera } = useThree()
+  camera.rotation.copy(props.cameraRotation)
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Canvas>
         <ambientLight intensity={2} />
         <directionalLight position={[1, 1, 1]} intensity={1.5} />
-        {/* <Environment preset="city" />
-        <ContactShadows
-        position={[0, -0.8, 0]}
-        opacity={0.75}
-        scale={10}
-        blur={1}
-        far={0.8}
-      /> */}
         <PerspectiveCamera
           makeDefault
           position={props.cameraPosition}
-          rotation={props.cameraRotation}
+          // rotation={props.cameraRotation}
           fov={100}
           near={0.1}
           far={100}
