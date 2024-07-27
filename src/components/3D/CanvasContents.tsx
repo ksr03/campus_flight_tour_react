@@ -1,6 +1,6 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import CampusModel from "./CampusModel";
-import { useThree } from "@react-three/fiber";
+// import { useThree } from "@react-three/fiber";
 import { Euler } from "three";
 
 interface Props {
@@ -9,9 +9,9 @@ interface Props {
     }
 
 function CanvasContents(props: Props) {
-    const { camera } = useThree()
+    // const { camera } = useThree()
     const rotation = new Euler(...props.cameraRotation, 'YXZ')
-    camera.rotation.copy(rotation)
+    // camera.rotation.copy(rotation)
     return (
     <>
       <ambientLight intensity={2} />
@@ -19,6 +19,7 @@ function CanvasContents(props: Props) {
       <PerspectiveCamera
         makeDefault
         position={props.cameraPosition}
+        rotation={rotation}
         fov={100}
         near={0.1}
         far={100}
