@@ -25,7 +25,7 @@ function Game() {
   // 建物の説明文
   const [text, setText] = useState<string>('自由に探索してみよう')
 
-  const [test, setTest] = useState<boolean>(false)
+  const [test, setTest] = useState<string>('none')
 
   useEffect(() => {
     // カメラの位置を更新する関数
@@ -56,7 +56,7 @@ function Game() {
       const alphaRad = cameraRotation[1] + gammaRad / 40;
 
       setCameraRotation([betaRad, alphaRad, gammaRad]);
-      setTest(true)
+      setTest(beta?.toFixed(0).toString() ?? 'null');
     };
 
     // const handleDeviceMotion = (event: DeviceMotionEvent) => {
