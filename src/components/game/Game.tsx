@@ -7,7 +7,7 @@ import checkCollision from "../../utils/checkCollision"
 import getText from "../../utils/getText"
 
 /// カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.5, 0]
+const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 0]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [0, 0, 0]
 
 function Game() {
