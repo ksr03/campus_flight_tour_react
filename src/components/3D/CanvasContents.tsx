@@ -10,8 +10,8 @@ interface Props {
 function CanvasContents(props: Props) {
   const { camera } = useThree()
   camera.position.set(...props.cameraPosition)
-//   camera.quaternion.copy(props.qt)
-  camera.quaternion.set(props.qt.x, props.qt.y, props.qt.z, props.qt.w)
+  camera.setRotationFromQuaternion(props.qt)
+  camera.quaternion.normalize()
   camera.quaternion.slerp(props.qt, 0.1)
   return (
     <>
