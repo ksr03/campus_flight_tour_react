@@ -11,6 +11,7 @@ function CanvasContents(props: Props) {
   const { camera } = useThree()
   camera.position.set(...props.cameraPosition)
   camera.quaternion.copy(props.qt)
+  camera.quaternion.slerp(props.qt, 0.3)
   return (
     <>
       <Canvas>

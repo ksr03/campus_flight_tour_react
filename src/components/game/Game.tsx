@@ -45,12 +45,9 @@ function Game() {
     // x軸を中心に-90度回転
     const _q1 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
     _qt.multiply(_q1);
-
-    // カメラの回転を滑らかに変更
-    qt.slerp(_qt, 0.3);
   
     setRotationY(alphaRad);
-    setQt(qt.clone());
+    setQt(_qt.clone());
 
     setTest(alpha);
   };
