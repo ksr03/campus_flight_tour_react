@@ -18,7 +18,7 @@ function Game() {
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
   // カメラの回転
   const [rotationY, setRotationY] = useState<number>(0)
-  const [qt, setQt] = useState<THREE.Quaternion>(new THREE.Quaternion().setFromEuler(new THREE.Euler(...INITIAL_CAMERA_ROTATION, 'YXZ')))
+  const [qt, setQt] = useState<THREE.Quaternion>(new THREE.Quaternion().setFromEuler(new THREE.Euler(...INITIAL_CAMERA_ROTATION, 'ZXY')))
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
   // 前進しているかどうか
@@ -39,7 +39,7 @@ function Game() {
     const gammaRad = THREE.MathUtils.degToRad(-(gamma ?? 0));
 
     // 新しいクォータニオンを計算
-    const euler = new THREE.Euler(betaRad, alphaRad, -gammaRad, 'YXZ');
+    const euler = new THREE.Euler(betaRad, alphaRad, -gammaRad, 'ZXY');
     const _qt = new THREE.Quaternion().setFromEuler(euler);
 
     // x軸を中心に-90度回転
