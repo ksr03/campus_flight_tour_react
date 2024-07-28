@@ -125,8 +125,15 @@ function Game() {
         rotation={cameraRotation[1]}
       />
       <div style={{ position: 'fixed', top: 0, right: 0, padding: '5px', color: 'black', fontSize: '1rem', zIndex: 1000, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', gap: 10 }}>
         <span style={{ fontWeight: 'bold' }}>x</span>: {cameraRotation[0].toFixed(2)} m/s
+        </div>
+        <div style={{ display: 'flex', gap: 10 }}>
         <span style={{ fontWeight: 'bold' }}>y</span>: {cameraRotation[1].toFixed(2)} m/s
+        </div>
+        <div style={{ display: 'flex', gap: 10, width: '100px', overflow: 'hidden' }}>
+        <span style={{ fontWeight: 'bold' }}>cameraRotation</span>: {new THREE.Euler(...cameraRotation, 'YXZ')} m/s
+        </div>
       </div>
     </>
   )
