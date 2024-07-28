@@ -39,9 +39,9 @@ function Game() {
 
     setCameraRotation([betaRad, alphaRad, 0]);
 
-    const tempBeta = THREE.MathUtils.radToDeg(event.beta ?? 0);
-    const tempAlpha = THREE.MathUtils.radToDeg(event.alpha ?? 0);
-    const tempGamma = THREE.MathUtils.radToDeg(event.gamma ? -event.gamma : 0);
+    const tempBeta = THREE.MathUtils.degToRad(event.beta ?? 0);
+    const tempAlpha = THREE.MathUtils.degToRad(event.alpha ?? 0);
+    const tempGamma = THREE.MathUtils.degToRad(event.gamma ? -event.gamma : 0);
 
     const euler = new THREE.Euler(tempBeta, tempAlpha, -tempGamma, 'ZXY');
     const newQt = new THREE.Quaternion().setFromEuler(euler);
