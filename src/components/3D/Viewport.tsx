@@ -6,7 +6,6 @@ import * as THREE from 'three'
 
 interface Props {
   cameraPosition: [number, number, number]
-  cameraRotation: [number, number, number]
   qt: THREE.Quaternion
 }
 

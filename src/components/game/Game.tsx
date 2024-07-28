@@ -49,6 +49,7 @@ function Game() {
     // x軸を中心に-90度回転
     const _q1 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
     newQt.multiply(_q1);
+    newQt.slerp(newQt, 0.3);
   
     setQt(newQt);
 
@@ -130,7 +131,7 @@ function Game() {
       <StartScreen onClick={() => setIsStarted(true)} isStarted={isStarted} />
       {/* 3Dビューポート */}
       <div style={{ width: '100%', height: '100%', backgroundColor: 'skyblue', zIndex: '100' }}>
-        <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} qt={qt} />
+        <Viewport cameraPosition={cameraPosition} qt={qt} />
       </div>
       {/* 2D UI */}
       <GameUI
