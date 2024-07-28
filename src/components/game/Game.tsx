@@ -32,7 +32,7 @@ function Game() {
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
     const { alpha, beta } = event;
 
-    const betaRad = Math.max(-Math.PI / 2, Math.min(THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 2));
+    const betaRad = Math.max(-Math.PI / 2, Math.min(-Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 2));
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
 
     setCameraRotation([betaRad, alphaRad, 0]);
