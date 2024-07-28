@@ -25,6 +25,7 @@ function Game() {
   const handleIsMoving = (isMoving: boolean) => setIsMoving(isMoving)
   // 建物の説明文
   const [text, setText] = useState<string>('自由に探索してみよう')
+  const [test, setTest] = useState<number | null>(null)
 
   /**
    * デバイスの向きからカメラの回転を更新する関数
@@ -36,6 +37,7 @@ function Game() {
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
 
     setCameraRotation([betaRad, alphaRad, 0]);
+    setTest(alpha);
   };
 
   /**
@@ -133,6 +135,9 @@ function Game() {
         </div>
         <div style={{ display: 'flex', gap: 10, width: '200px', overflow: 'hidden' }}>
         <span style={{ fontWeight: 'bold' }}>Rotation</span>: {new THREE.Euler(...cameraRotation, 'YXZ')} m/s
+        </div>
+        <div style={{ display: 'flex', gap: 10, width: '200px', overflow: 'hidden' }}>
+        <span style={{ fontWeight: 'bold' }}>alpha</span>: {test} m/s
         </div>
       </div>
     </>
