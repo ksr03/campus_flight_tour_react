@@ -63,10 +63,9 @@ function Game() {
    * カメラの位置を更新する関数
    */
   const updateCameraPosition = () => {
-    const [beta, alpha, gamma] = cameraRotation;
     // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
     const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
-    direction.applyEuler(new THREE.Euler(beta, alpha, gamma, 'YXZ'));
+    direction.applyEuler(new THREE.Euler(...cameraRotation, 'YXZ'));
 
     // 移動量を計算
     direction.multiplyScalar(cameraSpeed);
@@ -125,8 +124,9 @@ function Game() {
         position={[cameraPosition[0], cameraPosition[2]]}
         rotation={cameraRotation[1]}
       />
-      <div style={{ position: 'fixed', top: 0, right: 0, padding: '5px', color: 'black', fontSize: '1rem', zIndex: 1000 }}>
-        <span style={{ fontWeight: 'bold' }}>test</span>: {cameraRotation[0].toFixed(2)} m/s
+      <div style={{ position: 'fixed', top: 0, right: 0, padding: '5px', color: 'black', fontSize: '1rem', zIndex: 1000, display: 'flex', flexDirection: 'column' }}>
+        <span style={{ fontWeight: 'bold' }}>x</span>: {cameraRotation[0].toFixed(2)} m/s
+        <span style={{ fontWeight: 'bold' }}>y</span>: {cameraRotation[1].toFixed(2)} m/s
       </div>
     </>
   )
