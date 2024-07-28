@@ -1,5 +1,6 @@
 import { PerspectiveCamera } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
+import { Euler } from 'three'
 import CampusModel from './CampusModel'
 
 interface Props {
@@ -8,23 +9,20 @@ interface Props {
 }
 
 function Viewport (props: Props): JSX.Element {
+  // const qt = new Quaternion().setFromEuler(new Euler(...props.cameraRotation, 'ZXY'))
+  // qt.multiply(new Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2))
+  // qt.slerp(qt, 0.3)
+  const rotation = new Euler(...props.cameraRotation, 'YXZ')
   return (
     <div style={{ width: '100%', height: '100vh' }}>
       <Canvas>
         <ambientLight intensity={2} />
         <directionalLight position={[1, 1, 1]} intensity={1.5} />
-        {/* <Environment preset="city" />
-        <ContactShadows
-        position={[0, -0.8, 0]}
-        opacity={0.75}
-        scale={10}
-        blur={1}
-        far={0.8}
-      /> */}
         <PerspectiveCamera
           makeDefault
           position={props.cameraPosition}
-          rotation={props.cameraRotation}
+          // rotation={new Euler().setFromQuaternion(qt)}
+          rotation={rotation}
           fov={100}
           near={0.1}
           far={100}

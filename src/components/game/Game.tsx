@@ -4,14 +4,15 @@ import Viewport from "../3D/Viewport"
 import GameUI from "./GameUI"
 import StartScreen from "./StartScreen"
 import checkCollision from "../../utils/checkCollision"
-import changeText from "../../utils/changeText"
+import getText from "../../utils/getText"
 
-// カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 4]
-const INITIAL_CAMERA_ROTATION: [number, number, number] = [-Math.PI / 4, 0, 0]
+/// カメラの初期位置と回転
+const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 0.5, 0]
+const INITIAL_CAMERA_ROTATION: [number, number, number] = [0, 0, 0]
 
 function Game() {
   const timerRef = useRef<number | null>(null);
+  // ゲーム画面が表示されているかどうか
   const [isStarted, setIsStarted] = useState<boolean>(false);
   // カメラの位置
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
@@ -25,56 +26,60 @@ function Game() {
   // 建物の説明文
   const [text, setText] = useState<string>('自由に探索してみよう')
 
-  useEffect(() => {
-    // カメラの位置を更新する関数
-    const updateCameraPosition = () => {
-      const [beta, gamma] = cameraRotation;
-  
-      // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
-      const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
-      direction.applyEuler(new THREE.Euler(beta, gamma, 0)); // 回転を適用
-  
-      // 移動量を計算
-      direction.multiplyScalar(cameraSpeed);
-  
-      // 新しい位置を計算
-      const newPosition: [number, number, number] = checkCollision(cameraPosition, direction);
+  /**
+   * デバイスの向きからカメラの回転を更新する関数
+   */
+  const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
+    const { alpha, beta } = event;
 
-      // テキストを更新
-      setText(changeText(newPosition));
-  
-      setCameraPosition(newPosition);
-    };
-  
-    const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-      const { beta, gamma } = event;
+    const betaRad = Math.max(-Math.PI / 2, Math.min(-Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 2));
+    const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
 
-      const betaRad = Math.max(-Math.PI / 4 + 0.01, Math.min(-Math.PI / 4 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 4 - 0.01));
-      const gammaRad = Math.max(-Math.PI / 4, Math.min(-THREE.MathUtils.degToRad(gamma ?? 0), Math.PI / 4))
-      const alphaRad = cameraRotation[1] + gammaRad / 40;
+    setCameraRotation([betaRad, alphaRad, 0]);
+  };
 
-      setCameraRotation([betaRad, alphaRad, gammaRad]);
-    };
-
-    const requestPermission = async () => {
-      // @ts-expect-error: Check for iOS 13+ permission request
-      if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        try {
-          // @ts-expect-error: Check for iOS 13+ permission request
-          const response = await DeviceOrientationEvent.requestPermission();
-          if (response === 'granted') {
-            window.addEventListener('deviceorientation', handleDeviceOrientation);
-          }
-        } catch (error) {
-          console.error('Device orientation permission request failed:', error);
+  /**
+   * センサーの許可をリクエストする関数
+   */
+  const requestPermission = async () => {
+    // DeviceorientationEventの許可が必要な場合の処理
+    if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<'granted' | 'denied'> }).requestPermission === 'function') {
+      try {
+        const response = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<'granted' | 'denied'> }).requestPermission();
+        if (response === 'granted') {
+          // パーミッションが許可された場合はイベントリスナーを追加
+          window.addEventListener('deviceorientation', handleDeviceOrientation);
         }
-      } else {
-        window.addEventListener('deviceorientation', handleDeviceOrientation);
+      } catch (error) {
+        console.error('Device orientation permission request failed:', error);
       }
-    };
-  
-    requestPermission();
+    } else {
+      // パーミッションが不要な場合はイベントリスナーを追加
+      window.addEventListener('deviceorientation', handleDeviceOrientation);
+    }
+  };
 
+  /**
+   * カメラの位置を更新する関数
+   */
+  const updateCameraPosition = () => {
+    // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
+    const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
+    direction.applyEuler(new THREE.Euler(...cameraRotation, 'YXZ'));
+
+    // 移動量を計算
+    direction.multiplyScalar(cameraSpeed);
+
+    // 新しい位置を計算
+    const newPosition: [number, number, number] = checkCollision(cameraPosition, direction);
+
+    // テキストを更新
+    setText(getText(newPosition));
+
+    setCameraPosition(newPosition);
+  };
+
+  useEffect(() => {  
     timerRef.current = setInterval(() => {
       if (isMoving) {
         const newSpeed = cameraSpeed + 0.0002;
@@ -85,15 +90,22 @@ function Game() {
       }
       updateCameraPosition();
     }, 1000 / 60);
+  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving, isStarted]);
 
-    // クリーンアップ
+  // ゲーム終了時にイベントリスナーを削除
+  useEffect(() => {
     return () => {
       window.removeEventListener("deviceorientation", handleDeviceOrientation);
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
     };
-  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving, isStarted]);
+  }, []);
+
+  // ゲームスタート時にデバイスの許可をリクエスト
+  useEffect(() => {
+    requestPermission();
+  }, [isStarted]);
 
   return (
     <>
@@ -112,6 +124,17 @@ function Game() {
         position={[cameraPosition[0], cameraPosition[2]]}
         rotation={cameraRotation[1]}
       />
+      <div style={{ position: 'fixed', top: 0, right: 0, padding: '5px', color: 'black', fontSize: '1rem', zIndex: 1000, display: 'flex', flexDirection: 'column', backgroundColor: 'white' }}>
+        <div style={{ display: 'flex', gap: 10 }}>
+        <span style={{ fontWeight: 'bold' }}>x</span>: {cameraRotation[0].toFixed(2)} m/s
+        </div>
+        <div style={{ display: 'flex', gap: 10 }}>
+        <span style={{ fontWeight: 'bold' }}>y</span>: {cameraRotation[1].toFixed(2)} m/s
+        </div>
+        <div style={{ display: 'flex', gap: 10, width: '200px', overflow: 'hidden' }}>
+        <span style={{ fontWeight: 'bold' }}>Rotation</span>: {new THREE.Euler(...cameraRotation, 'YXZ')} m/s
+        </div>
+      </div>
     </>
   )
 }
