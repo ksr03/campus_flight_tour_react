@@ -38,7 +38,7 @@ function Game() {
     const gammaRad = THREE.MathUtils.degToRad(-(gamma ?? 0));
 
     // 新しいクォータニオンを計算
-    const _euler = new THREE.Euler(betaRad, -gammaRad, -alphaRad, 'ZXY');
+    const _euler = new THREE.Euler(betaRad, -alphaRad, -gammaRad, 'ZXY');
     const _qt = new THREE.Quaternion().setFromEuler(_euler);
 
     // x軸を中心に-90度回転
