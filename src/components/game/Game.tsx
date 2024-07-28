@@ -17,8 +17,8 @@ function Game() {
   // カメラの位置
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
   // カメラの回転
-  const [cameraRotation, setCameraRotation] = useState<[number, number, number]>(INITIAL_CAMERA_ROTATION)
-  const [qt, setQt] = useState<THREE.Quaternion>(new THREE.Quaternion().setFromEuler(new THREE.Euler(...cameraRotation, 'ZXY')))
+  const [rotationY, setRotationY] = useState<number>(0)
+  const [qt, setQt] = useState<THREE.Quaternion>(new THREE.Quaternion().setFromEuler(new THREE.Euler(...INITIAL_CAMERA_ROTATION, 'ZXY')))
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
   // 前進しているかどうか
@@ -32,25 +32,24 @@ function Game() {
    * デバイスの向きからカメラの回転を更新する関数
    */
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-    const { alpha, beta } = event;
+    const { alpha, beta, gamma } = event;
 
-    const betaRad = Math.max(-Math.PI / 2, Math.min(-Math.PI / 2 + THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 2));
+    const betaRad = THREE.MathUtils.degToRad(beta ?? 0);
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
+    const gammaRad = THREE.MathUtils.degToRad(gamma ?? 0);
 
-    setCameraRotation([betaRad, alphaRad, 0]);
-
-    const tempBeta = THREE.MathUtils.degToRad(event.beta ?? 0);
-    const tempAlpha = THREE.MathUtils.degToRad(event.alpha ?? 0);
-    const tempGamma = THREE.MathUtils.degToRad(event.gamma ? -event.gamma : 0);
-
-    const euler = new THREE.Euler(tempBeta, tempAlpha, -tempGamma, 'ZXY');
+    // 新しいクォータニオンを計算
+    const euler = new THREE.Euler(betaRad, alphaRad, -gammaRad, 'ZXY');
     const newQt = new THREE.Quaternion().setFromEuler(euler);
 
     // x軸を中心に-90度回転
     const _q1 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
     newQt.multiply(_q1);
+
+    // カメラの回転を滑らかに変更
     newQt.slerp(newQt, 0.3);
   
+    setRotationY(alphaRad);
     setQt(newQt);
 
     setTest(alpha);
@@ -82,8 +81,7 @@ function Game() {
    */
   const updateCameraPosition = () => {
     // カメラの向いている方向ベクトルを計算（カメラのローカル座標系を使用）
-    const direction = new THREE.Vector3(0, 0, -1); // カメラの前方方向を表す
-    direction.applyEuler(new THREE.Euler(...cameraRotation, 'YXZ'));
+    const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(qt);
 
     // 移動量を計算
     direction.multiplyScalar(cameraSpeed);
@@ -108,7 +106,7 @@ function Game() {
       }
       updateCameraPosition();
     }, 1000 / 60);
-  }, [cameraPosition, cameraRotation, cameraSpeed, isMoving, isStarted]);
+  }, [cameraPosition, cameraSpeed, isMoving, isStarted, qt]);
 
   // ゲーム終了時にイベントリスナーを削除
   useEffect(() => {
@@ -140,18 +138,9 @@ function Game() {
         speed={(cameraSpeed * 1000).toFixed(0).toString()}
         text={text}
         position={[cameraPosition[0], cameraPosition[2]]}
-        rotation={cameraRotation[1]}
+        rotation={rotationY}
       />
       <div style={{ position: 'fixed', top: 0, right: 0, padding: '5px', color: 'black', fontSize: '1rem', zIndex: 1000, display: 'flex', flexDirection: 'column', backgroundColor: 'white' }}>
-        <div style={{ display: 'flex', gap: 10 }}>
-        <span style={{ fontWeight: 'bold' }}>x</span>: {cameraRotation[0].toFixed(2)} m/s
-        </div>
-        <div style={{ display: 'flex', gap: 10 }}>
-        <span style={{ fontWeight: 'bold' }}>y</span>: {cameraRotation[1].toFixed(2)} m/s
-        </div>
-        <div style={{ display: 'flex', gap: 10, width: '200px', overflow: 'hidden' }}>
-        <span style={{ fontWeight: 'bold' }}>Rotation</span>: {new THREE.Euler(...cameraRotation, 'YXZ')} m/s
-        </div>
         <div style={{ display: 'flex', gap: 10, width: '200px', overflow: 'hidden' }}>
         <span style={{ fontWeight: 'bold' }}>alpha</span>: {test} m/s
         </div>
