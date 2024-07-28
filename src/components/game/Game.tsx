@@ -26,7 +26,6 @@ function Game() {
   const handleIsMoving = (isMoving: boolean) => setIsMoving(isMoving)
   // 建物の説明文
   const [text, setText] = useState<string>('自由に探索してみよう')
-  const [test, setTest] = useState<number | null>(null)
 
   /**
    * デバイスの向きからカメラの回転を更新する関数
@@ -39,8 +38,8 @@ function Game() {
     const gammaRad = THREE.MathUtils.degToRad(-(gamma ?? 0));
 
     // 新しいクォータニオンを計算
-    const euler = new THREE.Euler(betaRad, -gammaRad, alphaRad, 'ZXY');
-    const _qt = new THREE.Quaternion().setFromEuler(euler);
+    const _euler = new THREE.Euler(betaRad, alphaRad, -gammaRad, 'ZXY');
+    const _qt = new THREE.Quaternion().setFromEuler(_euler);
 
     // x軸を中心に-90度回転
     const _q1 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
@@ -48,8 +47,6 @@ function Game() {
   
     setRotationY(alphaRad);
     setQt(_qt.clone());
-
-    setTest(alpha);
   };
 
   /**
@@ -137,11 +134,6 @@ function Game() {
         position={[cameraPosition[0], cameraPosition[2]]}
         rotation={rotationY}
       />
-      <div style={{ position: 'fixed', top: 0, right: 0, padding: '5px', color: 'black', fontSize: '1rem', zIndex: 1000, display: 'flex', flexDirection: 'column', backgroundColor: 'white' }}>
-        <div style={{ display: 'flex', gap: 10, width: '200px', overflow: 'hidden' }}>
-        <span style={{ fontWeight: 'bold' }}>alpha</span>: {test} m/s
-        </div>
-      </div>
     </>
   )
 }
