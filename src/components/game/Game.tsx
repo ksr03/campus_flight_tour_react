@@ -18,6 +18,7 @@ function Game() {
   const [cameraPosition, setCameraPosition] = useState<[number, number, number]>(INITIAL_CAMERA_POSITION)
   // カメラの回転
   const [cameraRotation, setCameraRotation] = useState<[number, number, number]>(INITIAL_CAMERA_ROTATION)
+  const [qt, setQt] = useState<THREE.Quaternion>(new THREE.Quaternion().setFromEuler(new THREE.Euler(...cameraRotation, 'ZXY')))
   // カメラの速度
   const [cameraSpeed, setCameraSpeed] = useState<number>(0)
   // 前進しているかどうか
@@ -37,6 +38,20 @@ function Game() {
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
 
     setCameraRotation([betaRad, alphaRad, 0]);
+
+    const tempBeta = THREE.MathUtils.radToDeg(event.beta ?? 0);
+    const tempAlpha = THREE.MathUtils.radToDeg(event.alpha ?? 0);
+    const tempGamma = THREE.MathUtils.radToDeg(event.gamma ? -event.gamma : 0);
+
+    const euler = new THREE.Euler(tempBeta, tempAlpha, -tempGamma, 'ZXY');
+    const newQt = new THREE.Quaternion().setFromEuler(euler);
+
+    // x軸を中心に-90度回転
+    const _q1 = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2);
+    newQt.multiply(_q1);
+  
+    setQt(newQt);
+
     setTest(alpha);
   };
 
@@ -115,7 +130,7 @@ function Game() {
       <StartScreen onClick={() => setIsStarted(true)} isStarted={isStarted} />
       {/* 3Dビューポート */}
       <div style={{ width: '100%', height: '100%', backgroundColor: 'skyblue', zIndex: '100' }}>
-        <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} />
+        <Viewport cameraPosition={cameraPosition} cameraRotation={cameraRotation} qt={qt} />
       </div>
       {/* 2D UI */}
       <GameUI
