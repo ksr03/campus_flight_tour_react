@@ -30,13 +30,12 @@ function Game() {
    * デバイスの向きからカメラの回転を更新する関数
    */
   const handleDeviceOrientation = (event: DeviceOrientationEvent) => {
-    const { alpha, beta, gamma } = event;
+    const { alpha, beta } = event;
 
     const betaRad = Math.max(-Math.PI / 2, Math.min(THREE.MathUtils.degToRad(beta ?? 0), Math.PI / 2));
     const alphaRad = THREE.MathUtils.degToRad(alpha ?? 0);
-    const gammaRad = THREE.MathUtils.degToRad(gamma ?? 0);
 
-    setCameraRotation([betaRad, alphaRad, -gammaRad]);
+    setCameraRotation([betaRad, alphaRad, 0]);
   };
 
   /**
