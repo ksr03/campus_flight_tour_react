@@ -100,7 +100,7 @@ function Game() {
     timerRef.current = setInterval(() => {
       if (isMoving) {
         const newSpeed = speedRef.current + 0.0002;
-        speedRef.current = Math.min(newSpeed, 0.2);
+        speedRef.current = Math.min(newSpeed, 0.02);
       } else {
         const newSpeed = speedRef.current - 0.001;
         speedRef.current = Math.max(newSpeed, 0);
