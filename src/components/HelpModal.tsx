@@ -1,4 +1,6 @@
 import Modal from "react-modal";
+import { MdOutlineScreenRotation } from "react-icons/md";
+import { MdOutlineSwipeVertical } from "react-icons/md";
 
 Modal.setAppElement('#root');
 
@@ -28,11 +30,38 @@ function HelpModal(props: Props) {
         }
       }}
     >
-      <h2>使い方</h2>
-      <ul>
-        <li>スマートフォンを動かすと周りを見渡すことができます。</li>
-        <li>画面をスワイプすると、ドローンの速度を変えられます。</li>
-      </ul>
+      <h2
+        className="m-plus-rounded-1c-regular"
+        style={{
+          fontWeight: 'bold',
+          height: '30px',
+          width: '100%',
+          textAlign: 'center'
+        }}
+      >
+        使い方
+      </h2>
+      <hr style={{ width: '90%', margin: 'auto', marginBottom: '15px' }} />
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center'
+        }}
+      >
+        <MdOutlineScreenRotation style={{ fontSize: '5rem', color:'#303030' }} />
+        <p className="m-plus-rounded-1c-regular" style={{ paddingLeft: '10px', fontWeight: 'bold', color:'#303030' }}>スマートフォンを動かすと周りを見渡すことができます。</p>
+      </div>
+      <div
+        style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center'
+        }}
+      >
+        <MdOutlineSwipeVertical style={{ fontSize: '5rem', color:'#303030' }} />
+        <p className="m-plus-rounded-1c-regular" style={{ paddingLeft: '10px', fontWeight: 'bold', color:'#303030' }}>画面をスワイプすると、ドローンの速度を変えられます。</p>
+      </div>
     </Modal>
   )
 }
