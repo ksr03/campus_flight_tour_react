@@ -5,9 +5,10 @@ import GameUI from "./GameUI"
 import StartScreen from "./StartScreen"
 import checkCollision from "../../utils/checkCollision"
 import getText from "../../utils/getText"
+import useSpeed from "../../hooks/useSpeed"
 
 /// カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [0, 1.5, 0]
+const INITIAL_CAMERA_POSITION: [number, number, number] = [1, 0.7, 4]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [0, 0, 0]
 
 function Game() {
@@ -20,10 +21,7 @@ function Game() {
   const [rotationY, setRotationY] = useState<number>(0)
   const [qt, setQt] = useState<THREE.Quaternion>(new THREE.Quaternion().setFromEuler(new THREE.Euler(...INITIAL_CAMERA_ROTATION, 'ZXY')))
   // カメラの速度
-  const [cameraSpeed, setCameraSpeed] = useState<number>(0)
-  // 前進しているかどうか
-  const [isMoving, setIsMoving] = useState<boolean>(false)
-  const handleIsMoving = (isMoving: boolean) => setIsMoving(isMoving)
+  const [speed, handleTouchStart, handleTouchMove] = useSpeed();
   // 建物の説明文
   const [text, setText] = useState<string>('自由に探索してみよう')
 
@@ -78,7 +76,7 @@ function Game() {
     const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(qt);
 
     // 移動量を計算
-    direction.multiplyScalar(cameraSpeed);
+    direction.multiplyScalar(speed * 2);
 
     // 新しい位置を計算
     const newPosition: [number, number, number] = checkCollision(cameraPosition, direction);
@@ -89,23 +87,26 @@ function Game() {
     setCameraPosition(newPosition);
   };
 
-  useEffect(() => {  
+  useEffect(() => {
+    if (!isStarted) return;
+
+    // 既存のタイマーをクリア
+    if (timerRef.current)
+      clearInterval(timerRef.current);
+
+    // 新しいタイマーをセット
     timerRef.current = setInterval(() => {
-      if (isMoving) {
-        const newSpeed = cameraSpeed + 0.0002;
-        setCameraSpeed(Math.min(newSpeed, 0.02));
-      } else {
-        const newSpeed = cameraSpeed - 0.001;
-        setCameraSpeed(Math.max(newSpeed, 0));
-      }
+      // 1秒間に60回カメラの位置を更新
       updateCameraPosition();
     }, 1000 / 60);
-  }, [cameraPosition, cameraSpeed, isMoving, isStarted, qt]);
+  }, [cameraPosition, speed, qt]);
 
   // ゲーム終了時にイベントリスナーを削除
   useEffect(() => {
     return () => {
       window.removeEventListener("deviceorientation", handleDeviceOrientation);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchmove', handleTouchMove);
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
@@ -115,6 +116,8 @@ function Game() {
   // ゲームスタート時にデバイスの許可をリクエスト
   useEffect(() => {
     requestPermission();
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchmove', handleTouchMove);
   }, [isStarted]);
 
   return (
@@ -127,9 +130,7 @@ function Game() {
       </div>
       {/* 2D UI */}
       <GameUI
-        handleIsMoving={handleIsMoving}
-        isMoving={isMoving}
-        speed={(cameraSpeed * 1000).toFixed(0).toString()}
+        speed={speed * 1000}
         text={text}
         position={[cameraPosition[0], cameraPosition[2]]}
         rotation={rotationY}

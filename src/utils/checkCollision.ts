@@ -1,7 +1,7 @@
 import * as THREE from 'three'
 
 // 高さの最小値
-const MIN_HEIGHT = 0.5
+const MIN_HEIGHT = 0.2
 
 // マップの大きさ
 const MAP_SIZE = 9
