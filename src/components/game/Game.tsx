@@ -76,7 +76,7 @@ function Game() {
     const direction = new THREE.Vector3(0, 0, -1).applyQuaternion(qt);
 
     // 移動量を計算
-    direction.multiplyScalar(speed);
+    direction.multiplyScalar(speed * 2);
 
     // 新しい位置を計算
     const newPosition: [number, number, number] = checkCollision(cameraPosition, direction);
