@@ -130,7 +130,7 @@ function Game() {
       </div>
       {/* 2D UI */}
       <GameUI
-        speed={(speed * 1000).toFixed(0).toString()}
+        speed={speed * 1000}
         text={text}
         position={[cameraPosition[0], cameraPosition[2]]}
         rotation={rotationY}

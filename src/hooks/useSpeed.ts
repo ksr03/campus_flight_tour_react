@@ -19,8 +19,8 @@ function useSpeed(): useSpeedType {
   const handleTouchMove = (event: TouchEvent) => {
     const dy = onTouchPointYRef.current - event.touches[0].clientY;
     const newSpeed = tempSpeedRef.current + dy * 0.00005;
-    speedRef.current = Math.min(Math.max(newSpeed, -0.005), 0.02);
-    setSpeed(Math.floor(speedRef.current * 1000) / 1000);
+    speedRef.current = Math.min(Math.max(newSpeed, 0), 0.02);
+    setSpeed(Math.floor(speedRef.current * 500) / 1000);
   }
 
   return [speed, handleTouchStart, handleTouchMove];

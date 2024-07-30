@@ -1,8 +1,9 @@
 import SpeechBubble from "./SpeechBubble";
 import Map from "./Map";
+import SpeedMeter from "./SpeedMeter";
 
 interface Props {
-  speed: string;
+  speed: number;
   text: string;
   position: [number, number];
   rotation: number;
@@ -32,20 +33,7 @@ function GameUI (props: Props): JSX.Element {
           </p>
         </SpeechBubble>
       </div>
-      <div
-        className="m-plus-rounded-1c-regular"
-        style={{
-          position: 'fixed',
-          top: '50px',
-          left: 0,
-          padding: '5px',
-          color: 'white',
-          fontSize: '1rem',
-          zIndex: 1000,
-        }}
-      >
-        <span style={{ fontWeight: 'bold' }}>速度</span>: {props.speed} m/s
-      </div>
+      <SpeedMeter speed={props.speed} />
       <Map position={props.position} rotation={props.rotation} />
     </>
   )
