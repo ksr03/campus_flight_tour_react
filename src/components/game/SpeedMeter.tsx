@@ -8,15 +8,13 @@ function SpeedMeter(props: Props) {
       className="m-plus-rounded-1c-regular"
       style={{
         position: 'fixed',
-        top: '50px',
+        top: '60px',
         left: 0,
-        padding: '5px',
         color: 'white',
         fontSize: '1rem',
-        zIndex: 1000,
       }}
     >
-      <span style={{ fontWeight: 'bold' }}>速度</span>: {props.speed}
+      <span style={{ fontWeight: 'bold', paddingLeft: '5px' }}>速度: {props.speed}</span>
       <div
         style={{
           width: '33px',

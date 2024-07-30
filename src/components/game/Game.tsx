@@ -8,7 +8,7 @@ import getText from "../../utils/getText"
 import useSpeed from "../../hooks/useSpeed"
 
 /// カメラの初期位置と回転
-const INITIAL_CAMERA_POSITION: [number, number, number] = [1, 0.7, 4]
+const INITIAL_CAMERA_POSITION: [number, number, number] = [3, 0.3, 3]
 const INITIAL_CAMERA_ROTATION: [number, number, number] = [0, 0, 0]
 
 function Game() {
