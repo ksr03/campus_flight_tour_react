@@ -15,7 +15,7 @@ function SpeechBubble({ children }: Props) {
 
 const containerStyle: React.CSSProperties = {
     display: 'flex',
-    width: 'calc(100% - 130px)',
+    width: 'calc(100% - 20px)',
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
